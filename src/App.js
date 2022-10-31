@@ -9,13 +9,14 @@ import {Register} from "./pages/Register";
 import {Error} from "./pages/Error";
 import {Login} from "./pages/Login";
 import {Upload} from "./pages/Upload";
+import {AuthProvider} from "./contexts/authContext";
 
 function App() {
     const Layout = () => (
-        <>
+        <AuthProvider>
             <Header/>
             <Outlet/>
-        </>
+        </AuthProvider>
     );
 
     const router = createBrowserRouter(

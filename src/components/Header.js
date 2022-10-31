@@ -1,10 +1,10 @@
 import {Container, Nav, Navbar} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
-import {useAuthState} from "react-firebase-hooks/auth";
 import {fbAuth} from "../services/firebase";
+import {useAuthContext} from "../contexts/authContext";
 
 export function Header() {
-    const [user, loading] = useAuthState(fbAuth);
+    const {user, loading} = useAuthContext()
     return (
         <Navbar bg="light" expand="md">
             <Container>
