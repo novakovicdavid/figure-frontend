@@ -8,6 +8,7 @@ import {Profile} from "./pages/Profile";
 import {Register} from "./pages/Register";
 import {Error} from "./pages/Error";
 import {Login} from "./pages/Login";
+import {Upload} from "./pages/Upload";
 
 function App() {
     const Layout = () => (
@@ -41,6 +42,10 @@ function App() {
                 //     path: "/logout"
                 //     element: <Logout/>
                 // },
+                {
+                    path: "/upload",
+                    element: <Upload/>
+                },
                 {
                     path: "/profile",
                     element: <Profile/>

@@ -3,8 +3,8 @@ import {LinkContainer} from 'react-router-bootstrap'
 import {useAuthState} from "react-firebase-hooks/auth";
 import {fbAuth} from "../services/firebase";
 
-export function Header(props) {
-    const [user, loading, error] = useAuthState(fbAuth);
+export function Header() {
+    const [user, loading] = useAuthState(fbAuth);
     return (
         <Navbar bg="light" expand="md">
             <Container>
@@ -24,6 +24,12 @@ export function Header(props) {
                                 <Nav.Link>Sign up</Nav.Link>
                             </LinkContainer>
 
+                        }
+                        {
+                            user &&
+                            <LinkContainer to={"/upload"}>
+                                <Nav.Link>Upload</Nav.Link>
+                            </LinkContainer>
                         }
                         {
                             user &&
