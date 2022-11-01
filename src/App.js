@@ -48,7 +48,7 @@ function App() {
                     element: <Upload/>
                 },
                 {
-                    path: "/profile",
+                    path: "/profile/:useruid",
                     element: <Profile/>
                 },
                 {

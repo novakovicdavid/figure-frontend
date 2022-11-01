@@ -33,7 +33,7 @@ export function Header() {
                         }
                         {
                             user &&
-                            <LinkContainer to={"/profile"}>
+                            <LinkContainer to={"/profile/" + user.uid}>
                                 <Nav.Link>My Profile ({user.displayName || user.email})</Nav.Link>
                             </LinkContainer>
                         }
