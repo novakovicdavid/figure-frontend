@@ -3,12 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import {Header} from "./components/Header";
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router-dom";
-import {Home} from "./pages/Home";
-import {Profile} from "./pages/Profile";
-import {Register} from "./pages/Register";
-import {Error} from "./pages/Error";
-import {Login} from "./pages/Login";
-import {Upload} from "./pages/Upload";
+import {HomePage} from "./pages/HomePage";
+import {ProfilePage} from "./pages/ProfilePage";
+import {RegisterPage} from "./pages/RegisterPage";
+import {ErrorPage} from "./pages/ErrorPage";
+import {LoginPage} from "./pages/LoginPage";
+import {UploadPage} from "./pages/UploadPage";
 import {AuthProvider} from "./contexts/authContext";
 
 function App() {
@@ -25,19 +25,19 @@ function App() {
             children: [
                 {
                     path: "/",
-                    element: <Home/>
+                    element: <HomePage/>
                 },
                 {
                     path: "/home",
-                    element: <Home/>
+                    element: <HomePage/>
                 },
                 {
                     path: "/register",
-                    element: <Register/>
+                    element: <RegisterPage/>
                 },
                 {
                     path: "/login",
-                    element: <Login/>
+                    element: <LoginPage/>
                 },
                 // {
                 //     path: "/logout"
@@ -45,15 +45,19 @@ function App() {
                 // },
                 {
                     path: "/upload",
-                    element: <Upload/>
+                    element: <UploadPage/>
                 },
                 {
                     path: "/profile/:useruid",
-                    element: <Profile/>
+                    element: <ProfilePage/>
+                },
+                {
+                    path: "/figure/:figureid",
+                    element: <ProfilePage/>
                 },
                 {
                     path: "*",
-                    element: <Error/>
+                    element: <ErrorPage/>
                 }
             ]
         }]

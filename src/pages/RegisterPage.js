@@ -4,7 +4,7 @@ import {fbAuth} from "../services/firebase";
 import StyledFirebaseAuth from "../components/StyledFirebaseAuth.tsx";
 import {useNavigate} from "react-router-dom";
 
-export function Register() {
+export function RegisterPage() {
     const navigate = useNavigate();
     return(
         <StyledFirebaseAuth firebaseAuth={fbAuth} uiConfig={{

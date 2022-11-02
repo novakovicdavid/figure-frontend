@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {collection, query, orderBy, limit, getDocs, startAfter, where} from "firebase/firestore";
 import {fbFirestore} from "../services/firebase";
 import {useEffect, useState} from "react";
@@ -16,7 +16,7 @@ function getAndAppendFigures(figures, setFigures, setCountOfNewFigures) {
     });
 }
 
-export function Profile() {
+export function ProfilePage() {
     const useruid = useParams().useruid;
     const [figures, setFigures] = useState([]);
     const [countOfNewFigures, setCountOfNewFigures] = useState(0);

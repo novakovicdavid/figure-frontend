@@ -27,7 +27,7 @@ function handleUpload(event, title, description, file) {
     })
 }
 
-export function Upload() {
+export function UploadPage() {
     const [file, setFile] = useState(null)
     const [title, setTitle] = useState(null)
     const [description, setDescription] = useState(null)

@@ -1,4 +1,4 @@
-export function Home(props) {
+export function HomePage(props) {
     return(
         <p>home</p>
     )

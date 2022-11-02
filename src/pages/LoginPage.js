@@ -1,4 +1,4 @@
-export function Login() {
+export function LoginPage() {
     return(
         <div>login</div>
     )
