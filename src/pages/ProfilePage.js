@@ -50,7 +50,11 @@ export function ProfilePage() {
                     height={100}>
                     {
                         figures.map((figure) => {
-                            return <div style={{height: "500px"}} key={figure.id}>{figure.id}</div>
+                            return (
+                                <div style={{height: "500px"}} key={figure.id}>
+                                    <Link to={'/figure/' + figure.id}>{figure.id}</Link>
+                                </div>
+                            )
                         })
                     }
                 </InfiniteScroll>

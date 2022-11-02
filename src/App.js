@@ -9,7 +9,11 @@ import {RegisterPage} from "./pages/RegisterPage";
 import {ErrorPage} from "./pages/ErrorPage";
 import {LoginPage} from "./pages/LoginPage";
 import {UploadPage} from "./pages/UploadPage";
+import {FigurePage} from "./pages/FigurePage";
 import {AuthProvider} from "./contexts/authContext";
+import {ref, getDownloadURL} from "firebase/storage";
+import {fbStorage} from "./services/firebase";
+
 
 function App() {
     const Layout = () => (
@@ -53,7 +57,10 @@ function App() {
                 },
                 {
                     path: "/figure/:figureid",
-                    element: <ProfilePage/>
+                    element: <FigurePage/>,
+                    loader: async ({params}) => {
+                        return getDownloadURL(ref(fbStorage, 'figures/' + params.figureid));
+                    }
                 },
                 {
                     path: "*",
