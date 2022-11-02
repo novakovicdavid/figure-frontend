@@ -12,7 +12,8 @@ import {UploadPage} from "./pages/UploadPage";
 import {FigurePage} from "./pages/FigurePage";
 import {AuthProvider} from "./contexts/authContext";
 import {ref, getDownloadURL} from "firebase/storage";
-import {fbStorage} from "./services/firebase";
+import {fbFirestore, fbStorage} from "./services/firebase";
+import {doc, getDoc} from "firebase/firestore";
 
 
 function App() {
@@ -58,8 +59,12 @@ function App() {
                 {
                     path: "/figure/:figureid",
                     element: <FigurePage/>,
-                    loader: async ({params}) => {
-                        return getDownloadURL(ref(fbStorage, 'figures/' + params.figureid));
+                    loader: ({params}) => {
+                        const reference = ref(fbStorage, 'figures/' + params.figureid);
+                        return [getDownloadURL(reference), (async () => {
+                            const reference = doc(fbFirestore, 'figures', params.figureid);
+                            return getDoc(reference);
+                        })()];
                     }
                 },
                 {
