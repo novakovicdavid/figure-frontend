@@ -11,20 +11,24 @@ function handleUpload(event, title, description, file) {
     event.preventDefault();
     const uuid = uuidv4();
     if (file === null) return;
-    console.log(fbAuth.currentUser.uid)
-    const storageRef = ref(fbStorage, 'users/' + fbAuth.currentUser.uid + '/images/' + uuid);
-    uploadBytes(storageRef, file).then(() => {
-        console.log('Uploaded a blob or file!');
-    });
 
-    setDoc(doc(fbFirestore, "figures", uuid), {
-        creation: serverTimestamp(),
-        description: description,
-        title: title,
-        user: fbAuth.currentUser.uid
-    }).then(() => {
-        console.log('Created database entry')
-    })
+    const metadata = {
+        customMetadata: {
+            'user': fbAuth.currentUser.uid
+        }
+    }
+    const storageRef = ref(fbStorage, 'figures/' + uuid);
+    uploadBytes(storageRef, file, metadata).then(() => {
+        console.log('Uploaded a blob or file!');
+        setDoc(doc(fbFirestore, "figures", uuid), {
+            creation: serverTimestamp(),
+            description: description,
+            title: title,
+            user: fbAuth.currentUser.uid
+        }).then(() => {
+            console.log('Created database entry')
+        })
+    });
 }
 
 export function UploadPage() {
