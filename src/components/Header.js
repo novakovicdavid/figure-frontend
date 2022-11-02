@@ -18,6 +18,8 @@ export function Header() {
                         <LinkContainer to={"/about"}>
                             <Nav.Link>About</Nav.Link>
                         </LinkContainer>
+                    </Nav>
+                    <Nav>
                         {
                             !loading && !user &&
                             <LinkContainer to={"/register"}>
@@ -34,7 +36,7 @@ export function Header() {
                         {
                             user &&
                             <LinkContainer to={"/profile/" + user.uid}>
-                                <Nav.Link>My Profile ({user.displayName || user.email})</Nav.Link>
+                                <Nav.Link>My Profile</Nav.Link>
                             </LinkContainer>
                         }
                         {
