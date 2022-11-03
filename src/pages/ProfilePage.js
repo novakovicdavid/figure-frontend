@@ -1,36 +1,46 @@
-import {Link, useParams} from "react-router-dom";
-import {collection, query, orderBy, limit, getDocs, startAfter, where} from "firebase/firestore";
-import {fbFirestore} from "../services/firebase";
+import {Link, useLoaderData, useParams} from "react-router-dom";
+import {query, getDocs, startAfter, where} from "firebase/firestore";
 import {useEffect, useState} from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import {fbStorage} from "../services/firebase";
+import {getDownloadURL, ref} from "firebase/storage";
 
-function getAndAppendFigures(figures, setFigures, setCountOfNewFigures) {
-    const lastDoc = figures[figures.length - 1];
-    console.log('figures length: ', figures.length)
-    console.log('last doc: ', lastDoc);
-    const q = query(collection(fbFirestore, 'figures'), orderBy('creation', 'desc'), startAfter(lastDoc), limit(1));
-
-    getDocs(q).then((docsSnapshot) => {
-        setCountOfNewFigures(docsSnapshot.docs.length);
-        setFigures([...figures, ...docsSnapshot.docs]);
+function getQuerySnapshot(q) {
+    return getDocs(q).then((querySnapshot) => {
+        return querySnapshot.docs.map((doc) => {
+            const referenceStorage = ref(fbStorage, 'figures/' + doc.id);
+            doc.url = getDownloadURL(referenceStorage);
+            return doc;
+        })
     });
 }
 
-export function ProfilePage() {
+function getAndAppendFigures(figures, setFigures, setCountOfNewFigures, useruid, collectionRef, queryOrder, queryMaxItems) {
+    const lastDoc = figures[figures.length - 1];
+    const q = query(collectionRef, where('user', '==', useruid), queryOrder, startAfter(lastDoc), queryMaxItems);
+    getQuerySnapshot(q).then((figuresWithUnresolvedUrl) => {
+        figuresWithUnresolvedUrl = figuresWithUnresolvedUrl.map(async (figure) => {
+            figure.url = await figure.url;
+            return figure;
+        });
+        Promise.all(figuresWithUnresolvedUrl).then((figuresWithResolvedUrl) => {
+            setCountOfNewFigures(figuresWithResolvedUrl.length);
+            setFigures([...figures, ...figuresWithResolvedUrl]);
+        });
+    })
+}
+
+export function ProfilePage(props) {
     const useruid = useParams().useruid;
+    const figuresFromLoader = useLoaderData();
     const [figures, setFigures] = useState([]);
     const [countOfNewFigures, setCountOfNewFigures] = useState(0);
+    const {collectionRef, queryOrder, queryMaxItems, limitOfNewItems} = props;
 
     useEffect(() => {
-        const q = query(collection(fbFirestore, 'figures'), where('user', '==', useruid), orderBy('creation', 'desc'), limit(1));
-        getDocs(q).then((querySnapshot) => {
-            setCountOfNewFigures(querySnapshot.docs.length);
-            setFigures(querySnapshot.docs);
-        });
-    }, [useruid]);
-
-    console.log('render')
-
+        setCountOfNewFigures(figuresFromLoader.length);
+        setFigures(figuresFromLoader);
+    }, [figuresFromLoader]);
     return (
         <>
             {
@@ -38,9 +48,9 @@ export function ProfilePage() {
                 <InfiniteScroll
                     dataLength={figures.length}
                     next={() => {
-                        getAndAppendFigures(figures, setFigures, setCountOfNewFigures)
+                        getAndAppendFigures(figures, setFigures, setCountOfNewFigures, useruid, collectionRef, queryOrder, queryMaxItems)
                     }}
-                    hasMore={countOfNewFigures === 1}
+                    hasMore={countOfNewFigures === limitOfNewItems}
                     loader={<h4>Loading...</h4>}
                     endMessage={
                         <p style={{textAlign: 'center'}}>
@@ -52,7 +62,13 @@ export function ProfilePage() {
                         figures.map((figure) => {
                             return (
                                 <div style={{height: "500px"}} key={figure.id}>
-                                    <Link to={'/figure/' + figure.id}>{figure.id}</Link>
+                                    <Link to={'/figure/' + figure.id}>
+                                        {
+                                            <img style={{height: "100px"}} src={figure.url}/>
+                                        }
+                                    </Link>
+                                    <p>{figure.data().title}</p>
+                                    <p>{figure.data().description}</p>
                                 </div>
                             )
                         })

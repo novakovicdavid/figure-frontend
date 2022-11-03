@@ -14,6 +14,8 @@ import {AuthProvider} from "./contexts/authContext";
 import {ref, getDownloadURL} from "firebase/storage";
 import {fbFirestore, fbStorage} from "./services/firebase";
 import {doc, getDoc} from "firebase/firestore";
+import {collection, query, orderBy, limit, getDocs, where} from "firebase/firestore";
+import {useMemo} from "react";
 
 
 function App() {
@@ -23,6 +25,15 @@ function App() {
             <Outlet/>
         </AuthProvider>
     );
+
+    const limitOfNewItems = 1;
+
+    const collectionRef = useMemo(() =>
+        collection(fbFirestore, 'figures'), [])
+    const queryOrder = useMemo(() =>
+        orderBy('creation', 'desc'), [])
+    const queryMaxItems = useMemo(() =>
+        limit(limitOfNewItems), [])
 
     const router = createBrowserRouter(
         [{
@@ -54,17 +65,26 @@ function App() {
                 },
                 {
                     path: "/profile/:useruid",
-                    element: <ProfilePage/>
+                    element: <ProfilePage collectionRef={collectionRef} queryOrder={queryOrder} queryMaxItems={queryMaxItems} limitOfNewItems={limitOfNewItems}/>,
+                    loader: async ({params}) => {
+                        const q = query(collection(fbFirestore, 'figures'), where('user', '==', params.useruid), queryOrder, queryMaxItems);
+                        const docs = getDocs(q);
+                        return await docs.then((querySnapshot) => {
+                            return Promise.all(querySnapshot.docs.map(async (doc) => {
+                                const referenceStorage = ref(fbStorage, 'figures/' + doc.id);
+                                doc.url = await getDownloadURL(referenceStorage);
+                                return doc;
+                            }));
+                        });
+                    }
                 },
                 {
                     path: "/figure/:figureid",
                     element: <FigurePage/>,
                     loader: ({params}) => {
-                        const reference = ref(fbStorage, 'figures/' + params.figureid);
-                        return [getDownloadURL(reference), (async () => {
-                            const reference = doc(fbFirestore, 'figures', params.figureid);
-                            return getDoc(reference);
-                        })()];
+                        const referenceStorage = ref(fbStorage, 'figures/' + params.figureid);
+                        const referenceDb = doc(fbFirestore, 'figures', params.figureid);
+                        return [getDownloadURL(referenceStorage), getDoc(referenceDb)];
                     }
                 },
                 {
