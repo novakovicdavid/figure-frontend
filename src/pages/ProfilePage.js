@@ -27,7 +27,6 @@ export function ProfilePage(props) {
 
     return (
         <>
-            <p>Loading lol</p>
             {
                 figures.length > 0 &&
                 <InfiniteScroll

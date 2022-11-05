@@ -16,7 +16,6 @@ export function fetchFirstFigures(queryOrder, queryMaxItems, useruid = undefined
     let q;
     if (useruid) q = query(collection(fbFirestore, 'figures'), where('user', '==', useruid), queryOrder, queryMaxItems);
     else q = query(collection(fbFirestore, 'figures'), queryOrder, queryMaxItems);
-
     return getQuerySnapshot(q);
 }
 
