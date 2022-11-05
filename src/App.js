@@ -17,17 +17,21 @@ import {doc, getDoc} from "firebase/firestore";
 import {collection, orderBy, limit} from "firebase/firestore";
 import {useMemo} from "react";
 import {fetchFirstFigures} from "./utilities/FigureFetching";
+import {Footer} from "./components/Footer";
 
 
 function App() {
     const Layout = () => (
         <AuthProvider>
-            <Header/>
-            <Outlet/>
+            <div style={{display: "grid", height: "100vh", gridTemplateRows: "auto 1fr 56px"}}>
+                <Header/>
+                <Outlet/>
+                <Footer/>
+            </div>
         </AuthProvider>
     );
 
-    const limitOfNewItems = 1;
+    const limitOfNewItems = 3;
 
     const collectionRef = useMemo(() =>
         collection(fbFirestore, 'figures'), [])

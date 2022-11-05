@@ -27,38 +27,41 @@ export function ProfilePage(props) {
 
     return (
         <>
-            {
-                figures.length > 0 &&
-                <InfiniteScroll
-                    dataLength={figures.length}
-                    next={() => {
-                        getAndAppendFigures(figures, setFigures, setCountOfNewFigures, useruid, collectionRef, queryOrder, queryMaxItems)
-                    }}
-                    hasMore={countOfNewFigures === limitOfNewItems}
-                    loader={<h4>Loading...</h4>}
-                    endMessage={
-                        <p style={{textAlign: 'center'}}>
-                            <b>Yay! You have seen it all</b>
-                        </p>
-                    }
-                    height={100}>
-                    {
-                        figures.map((figure) => {
-                            return (
-                                <div style={{height: "500px"}} key={figure.id}>
-                                    <Link to={'/figure/' + figure.id}>
-                                        {
-                                            <img style={{height: "100px"}} src={figure.url}/>
-                                        }
-                                    </Link>
-                                    <p>{figure.data().title}</p>
-                                    <p>{figure.data().description}</p>
-                                </div>
-                            )
-                        })
-                    }
-                </InfiniteScroll>
-            }
+            <div id={"scroller"} className={"overflow-scroll"}>
+                {
+                    figures.length > 0 &&
+                    <InfiniteScroll
+                        dataLength={figures.length}
+                        next={() => {
+                            getAndAppendFigures(figures, setFigures, setCountOfNewFigures, useruid, collectionRef, queryOrder, queryMaxItems)
+                        }}
+                        hasMore={countOfNewFigures === limitOfNewItems}
+                        loader={<h4>Loading...</h4>}
+                        endMessage={
+                            <p style={{textAlign: 'center'}}>
+                                <b>Yay! You have seen it all</b>
+                            </p>
+                        }
+                        scrollableTarget={"scroller"}
+                    >
+                        {
+                            figures.map((figure) => {
+                                return (
+                                    <div style={{height: "500px"}} key={figure.id}>
+                                        <Link to={'/figure/' + figure.id}>
+                                            {
+                                                <img style={{height: "100px"}} src={figure.url}/>
+                                            }
+                                        </Link>
+                                        <p>{figure.data().title}</p>
+                                        <p>{figure.data().description}</p>
+                                    </div>
+                                )
+                            })
+                        }
+                    </InfiniteScroll>
+                }
+            </div>
         </>
     )
 }
