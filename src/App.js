@@ -2,7 +2,7 @@ import 'normalize.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import {Header} from "./components/Header";
-import {createBrowserRouter, Outlet, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, defer, Outlet, RouterProvider} from "react-router-dom";
 import {HomePage} from "./pages/HomePage";
 import {ProfilePage} from "./pages/ProfilePage";
 import {RegisterPage} from "./pages/RegisterPage";
@@ -66,16 +66,16 @@ function App() {
                 {
                     path: "/profile/:useruid",
                     element: <ProfilePage collectionRef={collectionRef} queryOrder={queryOrder} queryMaxItems={queryMaxItems} limitOfNewItems={limitOfNewItems}/>,
-                    loader: async ({params}) => {
+                    loader: ({params}) => {
                         const q = query(collection(fbFirestore, 'figures'), where('user', '==', params.useruid), queryOrder, queryMaxItems);
-                        const docs = getDocs(q);
-                        return await docs.then((querySnapshot) => {
+                        const docs = getDocs(q).then((querySnapshot) => {
                             return Promise.all(querySnapshot.docs.map(async (doc) => {
                                 const referenceStorage = ref(fbStorage, 'figures/' + doc.id);
                                 doc.url = await getDownloadURL(referenceStorage);
                                 return doc;
                             }));
                         });
+                        return defer({docs: docs})
                     }
                 },
                 {

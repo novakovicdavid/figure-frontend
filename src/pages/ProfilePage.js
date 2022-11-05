@@ -38,11 +38,15 @@ export function ProfilePage(props) {
     const {collectionRef, queryOrder, queryMaxItems, limitOfNewItems} = props;
 
     useEffect(() => {
-        setCountOfNewFigures(figuresFromLoader.length);
-        setFigures(figuresFromLoader);
+        figuresFromLoader.docs.then((newFigures) => {
+            setCountOfNewFigures(newFigures.length);
+            setFigures(newFigures);
+        });
     }, [figuresFromLoader]);
+
     return (
         <>
+            <p>Loading lol</p>
             {
                 figures.length > 0 &&
                 <InfiniteScroll
