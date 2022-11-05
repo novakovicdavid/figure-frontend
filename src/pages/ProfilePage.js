@@ -1,33 +1,14 @@
 import {Link, useLoaderData, useParams} from "react-router-dom";
-import {query, getDocs, startAfter, where} from "firebase/firestore";
 import {useEffect, useState} from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {fbStorage} from "../services/firebase";
-import {getDownloadURL, ref} from "firebase/storage";
-
-function getQuerySnapshot(q) {
-    return getDocs(q).then((querySnapshot) => {
-        return querySnapshot.docs.map((doc) => {
-            const referenceStorage = ref(fbStorage, 'figures/' + doc.id);
-            doc.url = getDownloadURL(referenceStorage);
-            return doc;
-        })
-    });
-}
+import {fetchNextFigures} from "../utilities/FigureFetching";
 
 function getAndAppendFigures(figures, setFigures, setCountOfNewFigures, useruid, collectionRef, queryOrder, queryMaxItems) {
     const lastDoc = figures[figures.length - 1];
-    const q = query(collectionRef, where('user', '==', useruid), queryOrder, startAfter(lastDoc), queryMaxItems);
-    getQuerySnapshot(q).then((figuresWithUnresolvedUrl) => {
-        figuresWithUnresolvedUrl = figuresWithUnresolvedUrl.map(async (figure) => {
-            figure.url = await figure.url;
-            return figure;
-        });
-        Promise.all(figuresWithUnresolvedUrl).then((figuresWithResolvedUrl) => {
-            setCountOfNewFigures(figuresWithResolvedUrl.length);
-            setFigures([...figures, ...figuresWithResolvedUrl]);
-        });
-    })
+    fetchNextFigures(lastDoc, queryOrder, queryMaxItems, useruid).then((newFigures) => {
+        setCountOfNewFigures(newFigures.length);
+        setFigures([...figures, ...newFigures]);
+    });
 }
 
 export function ProfilePage(props) {

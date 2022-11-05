@@ -14,8 +14,9 @@ import {AuthProvider} from "./contexts/authContext";
 import {ref, getDownloadURL} from "firebase/storage";
 import {fbFirestore, fbStorage} from "./services/firebase";
 import {doc, getDoc} from "firebase/firestore";
-import {collection, query, orderBy, limit, getDocs, where} from "firebase/firestore";
+import {collection, orderBy, limit} from "firebase/firestore";
 import {useMemo} from "react";
+import {fetchFirstFigures} from "./utilities/FigureFetching";
 
 
 function App() {
@@ -67,15 +68,7 @@ function App() {
                     path: "/profile/:useruid",
                     element: <ProfilePage collectionRef={collectionRef} queryOrder={queryOrder} queryMaxItems={queryMaxItems} limitOfNewItems={limitOfNewItems}/>,
                     loader: ({params}) => {
-                        const q = query(collection(fbFirestore, 'figures'), where('user', '==', params.useruid), queryOrder, queryMaxItems);
-                        const docs = getDocs(q).then((querySnapshot) => {
-                            return Promise.all(querySnapshot.docs.map(async (doc) => {
-                                const referenceStorage = ref(fbStorage, 'figures/' + doc.id);
-                                doc.url = await getDownloadURL(referenceStorage);
-                                return doc;
-                            }));
-                        });
-                        return defer({docs: docs})
+                        return defer({docs: fetchFirstFigures(queryOrder, queryMaxItems, params.useruid)})
                     }
                 },
                 {
