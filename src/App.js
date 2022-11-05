@@ -22,13 +22,13 @@ import {Footer} from "./components/Footer";
 
 function App() {
     const Layout = () => (
-        <AuthProvider>
-            <div style={{display: "grid", height: "100vh", gridTemplateRows: "auto 1fr 56px"}}>
+        <div style={{display: "grid", height: "100vh", gridTemplateRows: "auto 1fr 56px"}}>
+            <AuthProvider>
                 <Header/>
                 <Outlet/>
                 <Footer/>
-            </div>
-        </AuthProvider>
+            </AuthProvider>
+        </div>
     );
 
     const limitOfNewItems = 3;
@@ -70,7 +70,8 @@ function App() {
                 },
                 {
                     path: "/profile/:useruid",
-                    element: <ProfilePage collectionRef={collectionRef} queryOrder={queryOrder} queryMaxItems={queryMaxItems} limitOfNewItems={limitOfNewItems}/>,
+                    element: <ProfilePage collectionRef={collectionRef} queryOrder={queryOrder}
+                                          queryMaxItems={queryMaxItems} limitOfNewItems={limitOfNewItems}/>,
                     loader: ({params}) => {
                         return defer({docs: fetchFirstFigures(queryOrder, queryMaxItems, params.useruid)})
                     }

@@ -21,7 +21,7 @@ export function FigurePage() {
 
     console.log(figureData);
     return (
-        <>
+        <div>
             {
                 imageURL &&
                 <img src={imageURL}/>
@@ -34,6 +34,6 @@ export function FigurePage() {
                     <Link to={'/profile/' + figureData.user}>{figureData.user}</Link>
                 </div>
             }
-        </>
+        </div>
     )
 }
