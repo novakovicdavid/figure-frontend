@@ -24,7 +24,7 @@ export function Figures(props) {
         <Container>
             {
                 figures.map((figure) =>
-                    <Figure id={figure.id} url={figure.url} title={figure.data().title}/>
+                    <Figure id={figure.id} url={figure.url} title={figure.data().title} key={figure.id}/>
                 )
             }
         </Container>
