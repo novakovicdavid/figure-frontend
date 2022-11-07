@@ -8,7 +8,6 @@ import {ProfilePage} from "./pages/ProfilePage";
 import {RegisterPage} from "./pages/RegisterPage";
 import {ErrorPage} from "./pages/ErrorPage";
 import {LoginPage} from "./pages/LoginPage";
-import {UploadPage} from "./pages/UploadPage";
 import {FigurePage} from "./pages/FigurePage";
 import {AuthProvider} from "./contexts/authContext";
 import {ref, getDownloadURL} from "firebase/storage";
@@ -59,14 +58,6 @@ function App() {
                 {
                     path: "/login",
                     element: <LoginPage/>
-                },
-                // {
-                //     path: "/logout"
-                //     element: <Logout/>
-                // },
-                {
-                    path: "/upload",
-                    element: <UploadPage/>
                 },
                 {
                     path: "/profile/:useruid",

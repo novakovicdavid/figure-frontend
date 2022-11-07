@@ -17,7 +17,7 @@ export function FigurePage() {
         }
 
         Promise.all([fetchURL(), fetchFigureMetadata()]);
-    }, [])
+    }, [imageUrlPromiseFromLoader])
 
     console.log(figureData);
     return (
