@@ -50,7 +50,7 @@ export function ProfilePage(props) {
                         }
                         scrollableTarget={"scroller"}
                     >
-                        <div style={{maxWidth: "720px"}}>
+                        <div style={{width: "100%", maxWidth: "720px"}}>
                             <Figures figures={figures}/>
                         </div>
                     </InfiniteScroll>
