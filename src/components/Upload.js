@@ -45,14 +45,23 @@ export function Upload(props) {
     const navigate = useNavigate();
     useEffect(() => {
         if (uidOfCompletedUpload) {
-            setShow(false);
             navigate("/figure/" + uidOfCompletedUpload);
-            console.log('uid:', uidOfCompletedUpload);
+            setUidOfCompletedUpload(undefined);
+            setShow(false);
+            setFile(undefined);
+            setTitle(undefined);
+            setDescription(undefined);
+            setUploading(false);
+            setValidated(false);
         }
     }, [uidOfCompletedUpload]);
     return (
         <Modal show={show} onHide={() => {
             setShow(false);
+            setFile(undefined);
+            setTitle(undefined);
+            setDescription(undefined);
+            setUploading(false);
             setValidated(false);
         }}>
             <Modal.Header closeButton>

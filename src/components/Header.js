@@ -55,7 +55,7 @@ export function Header() {
                         }
                     </Nav>
                 </Navbar.Collapse>
-                <Upload show={showUploadModal} setShow={setShowUploadModal} key={Date.now()}/>
+                <Upload show={showUploadModal} setShow={setShowUploadModal}/>
             </Container>
         </Navbar>
     )
