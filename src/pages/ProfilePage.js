@@ -33,10 +33,10 @@ export function ProfilePage(props) {
     return (
         <Awaited isLoading={isLoading}>
             <div id={"scroller"} className={"overflow-scroll"}
-                 style={{justifySelf: "center", maxWidth: "720px"}}>
+                 style={{justifySelf: "center", width: "100vw"}}>
                 {
                     figures.length > 0 &&
-                    <InfiniteScroll
+                    <InfiniteScroll style={{display: "flex", flexDirection: "column", alignItems: "center"}}
                         dataLength={figures.length}
                         next={() => {
                             getAndAppendFigures(figures, setFigures, setCountOfNewFigures, useruid, collectionRef, queryOrder, queryMaxItems)
@@ -50,7 +50,9 @@ export function ProfilePage(props) {
                         }
                         scrollableTarget={"scroller"}
                     >
-                        <Figures figures={figures}/>
+                        <div style={{maxWidth: "720px"}}>
+                            <Figures figures={figures}/>
+                        </div>
                     </InfiniteScroll>
                 }
 
