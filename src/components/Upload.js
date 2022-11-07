@@ -20,17 +20,30 @@ function handleUpload(event, title, description, file, useruid, navigate, setUpl
             'user': useruid
         }
     }
-    const storageRef = ref(fbStorage, 'figures/' + uuid);
-    uploadBytes(storageRef, file, metadata).then(() => {
-        setDoc(doc(fbFirestore, "figures", uuid), {
-            creation: serverTimestamp(),
-            description: description,
-            title: title,
-            user: useruid
-        }).then(() => {
-            setUidOfCompletedUpload(uuid);
-        })
-    });
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+        const image = new Image();
+        image.src = e.target.result;
+        image.onload = () => {
+            const storageRef = ref(fbStorage, 'figures/' + uuid);
+            uploadBytes(storageRef, file, metadata).then(() => {
+                setDoc(doc(fbFirestore, "figures", uuid), {
+                    creation: serverTimestamp(),
+                    title: title,
+                    description: description,
+                    sizex: image.width,
+                    sizey: image.height,
+                    user: useruid
+                }).then(() => {
+                    setUidOfCompletedUpload(uuid);
+                })
+            });
+        }
+    }
+
+
 }
 
 export function Upload(props) {
