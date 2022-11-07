@@ -10,7 +10,7 @@ export function Header() {
     const [activeLink, setActiveLink] = useState("");
     const [showUploadModal, setShowUploadModal] = useState(false);
     return (
-        <Navbar bg="light" expand="md">
+        <Navbar bg="light" expand="md" collapseOnSelect={true}>
             <Container>
                 <LinkContainer to={"/"} onClick={() => setActiveLink("none")}>
                     <Navbar.Brand>Figure</Navbar.Brand>
