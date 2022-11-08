@@ -9,14 +9,15 @@ import {serverTimestamp} from "firebase/firestore"
 import {useAuthContext} from "../contexts/authContext";
 import {useNavigate} from "react-router-dom";
 
-function handleUpload(event, title, description, file, useruid, navigate, setUploading, setUidOfCompletedUpload) {
+function handleUpload(event, title, description, file, username, useruid, navigate, setUploading, setUidOfCompletedUpload) {
     event.preventDefault();
     const uuid = uuidv4();
     if (!file || !title || !description) return;
     setUploading(true);
     const metadata = {
         customMetadata: {
-            'user': useruid
+            'user': username,
+            'useruid': useruid
         }
     }
     const reader = new FileReader();
@@ -33,7 +34,7 @@ function handleUpload(event, title, description, file, useruid, navigate, setUpl
                     description: description,
                     sizex: image.width,
                     sizey: image.height,
-                    user: useruid
+                    user: username
                 }).then(() => {
                     setUidOfCompletedUpload(uuid);
                 })
@@ -50,7 +51,7 @@ export function Upload(props) {
     const [uploading, setUploading] = useState(false);
     const [validated, setValidated] = useState(false);
     const [uidOfCompletedUpload, setUidOfCompletedUpload] = useState();
-    const {user} = useAuthContext();
+    const {username, user} = useAuthContext();
     const navigate = useNavigate();
     useEffect(() => {
         if (uidOfCompletedUpload) {
@@ -78,7 +79,7 @@ export function Upload(props) {
             </Modal.Header>
             <Modal.Body>
                 <Form noValidate validated={validated} onSubmit={(e) => {
-                    handleUpload(e, title, description, file, user.uid, navigate, setUploading, setUidOfCompletedUpload);
+                    handleUpload(e, title, description, file, username, user.uid, navigate, setUploading, setUidOfCompletedUpload);
                     setValidated(true);
                 }}>
                     <Form.Group controlId="formFile" className="mb-3">

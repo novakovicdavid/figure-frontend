@@ -15,7 +15,7 @@ import {fbFirestore, fbStorage} from "./services/firebase";
 import {doc, getDoc} from "firebase/firestore";
 import {collection, orderBy, limit} from "firebase/firestore";
 import {useMemo} from "react";
-import {fetchFirstFigures} from "./utilities/FigureFetching";
+import {fetchFirstFigures, getQuerySnapshot} from "./utilities/FigureFetching";
 import {Footer} from "./components/Footer";
 
 
@@ -60,11 +60,11 @@ function App() {
                     element: <LoginPage/>
                 },
                 {
-                    path: "/profile/:useruid",
+                    path: "/profile/:username",
                     element: <ProfilePage collectionRef={collectionRef} queryOrder={queryOrder}
                                           queryMaxItems={queryMaxItems} limitOfNewItems={limitOfNewItems}/>,
                     loader: ({params}) => {
-                        return defer({docs: fetchFirstFigures(queryOrder, queryMaxItems, params.useruid)})
+                        return defer({docs: fetchFirstFigures(queryOrder, queryMaxItems, params.username)})
                     }
                 },
                 {

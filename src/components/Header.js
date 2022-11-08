@@ -6,7 +6,7 @@ import {useState} from "react";
 import {Upload} from "./Upload";
 
 export function Header() {
-    const {user, loading} = useAuthContext()
+    const {username, loading} = useAuthContext()
     const [activeLink, setActiveLink] = useState("");
     const [showUploadModal, setShowUploadModal] = useState(false);
     return (
@@ -29,7 +29,7 @@ export function Header() {
                     </Nav>
                     <Nav>
                         {
-                            !loading && !user &&
+                            !loading && !username &&
                             <>
                                 <LinkContainer to={"/login"} onClick={() => setActiveLink("login")}
                                                active={activeLink === "login"}>
@@ -42,20 +42,20 @@ export function Header() {
                             </>
                         }
                         {
-                            user &&
+                            username &&
                             <Nav.Link onClick={() => {
                                 setShowUploadModal(true);
                             }}>Upload</Nav.Link>
                         }
                         {
-                            user &&
-                            <LinkContainer to={"/profile/" + user.uid} onClick={() => setActiveLink("profile")}
+                            username &&
+                            <LinkContainer to={"/profile/" + username} onClick={() => setActiveLink("profile")}
                                            active={activeLink === "profile"}>
                                 <Nav.Link>My Profile</Nav.Link>
                             </LinkContainer>
                         }
                         {
-                            user &&
+                            username &&
                             <Nav.Link onClick={() => fbAuth.signOut()}>Logout</Nav.Link>
                         }
                     </Nav>

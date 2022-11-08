@@ -12,16 +12,16 @@ function getQuerySnapshot(q) {
     });
 }
 
-export function fetchFirstFigures(queryOrder, queryMaxItems, useruid = undefined) {
+export function fetchFirstFigures(queryOrder, queryMaxItems, username = undefined) {
     let q;
-    if (useruid) q = query(collection(fbFirestore, 'figures'), where('user', '==', useruid), queryOrder, queryMaxItems);
+    if (username) q = query(collection(fbFirestore, 'figures'), where('user', '==', username), queryOrder, queryMaxItems);
     else q = query(collection(fbFirestore, 'figures'), queryOrder, queryMaxItems);
     return getQuerySnapshot(q);
 }
 
-export function fetchNextFigures(lastDoc, queryOrder, queryMaxItems, useruid = undefined) {
+export function fetchNextFigures(lastDoc, queryOrder, queryMaxItems, username = undefined) {
     let q;
-    if (useruid) q = query(collection(fbFirestore, 'figures'), where('user', '==', useruid), queryOrder, startAfter(lastDoc), queryMaxItems);
+    if (username) q = query(collection(fbFirestore, 'figures'), where('user', '==', username), queryOrder, startAfter(lastDoc), queryMaxItems);
     else q = query(collection(fbFirestore, 'figures'), queryOrder, startAfter(lastDoc), queryMaxItems);
     return getQuerySnapshot(q);
 }

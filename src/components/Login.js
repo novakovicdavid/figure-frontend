@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {Alert, Button, Form, Spinner} from "react-bootstrap";
 import {signInWithEmailAndPassword} from "firebase/auth";
 import {fbAuth} from "../services/firebase";
+import {useAuthContext} from "../contexts/authContext";
 
 function handleLogin(email, password, setSigningIn, setUseruid, setError) {
     if (!email || !password) return;
@@ -27,10 +28,11 @@ export function Login() {
     const [useruid, setUseruid] = useState(undefined);
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const {username} = useAuthContext();
 
     useEffect(() => {
-        if (useruid) navigate("/profile/" + useruid);
-    }, [useruid]);
+        if (useruid && username) navigate("/profile/" + username);
+    }, [useruid, username]);
 
     useEffect(() => {
         if (error.length > 0) setSigningIn(false);

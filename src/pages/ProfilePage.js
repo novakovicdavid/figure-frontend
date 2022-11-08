@@ -6,16 +6,16 @@ import {Figures} from "../components/Figures";
 import {Awaited} from "../components/Awaited";
 import '../styling/no-scroll.css'
 
-function getAndAppendFigures(figures, setFigures, setCountOfNewFigures, useruid, collectionRef, queryOrder, queryMaxItems) {
+function getAndAppendFigures(figures, setFigures, setCountOfNewFigures, username, collectionRef, queryOrder, queryMaxItems) {
     const lastDoc = figures[figures.length - 1];
-    fetchNextFigures(lastDoc, queryOrder, queryMaxItems, useruid).then((newFigures) => {
+    fetchNextFigures(lastDoc, queryOrder, queryMaxItems, username).then((newFigures) => {
         setCountOfNewFigures(newFigures.length);
         setFigures([...figures, ...newFigures]);
     });
 }
 
 export function ProfilePage(props) {
-    const useruid = useParams().useruid;
+    const username = useParams().username;
     const figuresFromLoader = useLoaderData();
     const [figures, setFigures] = useState([]);
     const [isLoading, setLoading] = useState(true)
@@ -39,7 +39,7 @@ export function ProfilePage(props) {
                     <InfiniteScroll style={{display: "flex", flexDirection: "column", alignItems: "center"}}
                         dataLength={figures.length}
                         next={() => {
-                            getAndAppendFigures(figures, setFigures, setCountOfNewFigures, useruid, collectionRef, queryOrder, queryMaxItems)
+                            getAndAppendFigures(figures, setFigures, setCountOfNewFigures, username, collectionRef, queryOrder, queryMaxItems)
                         }}
                         hasMore={countOfNewFigures === limitOfNewItems}
                         loader={<></>}
