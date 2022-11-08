@@ -35,8 +35,11 @@ export function Header() {
                                                active={activeLink === "login"} className={"me-3"}>
                                     <Nav.Link>Login</Nav.Link>
                                 </LinkContainer>
-                                <LinkContainer to={"/register"}>
-                                    <Button>Sign up</Button>
+                                <LinkContainer to={"/register"} onClick={() => setActiveLink("register")}
+                                               active={activeLink === "register"} className={"p-0"}>
+                                    <Nav.Link>
+                                        <Button>Sign up</Button>
+                                    </Nav.Link>
                                 </LinkContainer>
                             </>
                         }
