@@ -15,7 +15,7 @@ import {fbFirestore, fbStorage} from "./services/firebase";
 import {doc, getDoc} from "firebase/firestore";
 import {collection, orderBy, limit} from "firebase/firestore";
 import {useMemo} from "react";
-import {fetchFirstFigures, getQuerySnapshot} from "./utilities/FigureFetching";
+import {fetchFirstFigures} from "./utilities/FigureFetching";
 import {Footer} from "./components/Footer";
 
 
