@@ -51,7 +51,7 @@ export function Header() {
                             username &&
                             <LinkContainer to={"/profile/" + username} onClick={() => setActiveLink("profile")}
                                            active={activeLink === "profile"}>
-                                <Nav.Link>My Profile</Nav.Link>
+                                <Nav.Link>Profile ({username})</Nav.Link>
                             </LinkContainer>
                         }
                         {
