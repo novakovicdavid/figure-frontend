@@ -31,24 +31,25 @@ export function ProfilePage(props) {
     }, [figuresFromLoader]);
 
     return (
-        <Awaited isLoading={isLoading}>
-            <div id={"scroller"} className={"overflow-scroll"}
-                 style={{justifySelf: "center", width: "100vw"}}>
+        <div id={"scroller"} className={"overflow-scroll"}
+             style={{display: "grid", justifySelf: "center", width: "100vw"}}>
+            <div className={"sticky-top"} style={{display: "grid", placeItems: "center", height: "2em", backdropFilter: "blur(10px)"}}>{username}</div>
+            <Awaited isLoading={isLoading}>
                 {
                     figures.length > 0 &&
                     <InfiniteScroll style={{display: "flex", flexDirection: "column", alignItems: "center"}}
-                        dataLength={figures.length}
-                        next={() => {
-                            getAndAppendFigures(figures, setFigures, setCountOfNewFigures, username, collectionRef, queryOrder, queryMaxItems)
-                        }}
-                        hasMore={countOfNewFigures === limitOfNewItems}
-                        loader={<></>}
-                        endMessage={
-                            <p style={{textAlign: 'center'}}>
-                                <b>Yay! You have seen it all</b>
-                            </p>
-                        }
-                        scrollableTarget={"scroller"}
+                                    dataLength={figures.length}
+                                    next={() => {
+                                        getAndAppendFigures(figures, setFigures, setCountOfNewFigures, username, collectionRef, queryOrder, queryMaxItems)
+                                    }}
+                                    hasMore={countOfNewFigures === limitOfNewItems}
+                                    loader={<></>}
+                                    endMessage={
+                                        <p style={{textAlign: 'center'}}>
+                                            <b>Yay! You have seen it all</b>
+                                        </p>
+                                    }
+                                    scrollableTarget={"scroller"}
                     >
                         <div style={{width: "100%", maxWidth: "720px"}}>
                             <Figures figures={figures}/>
@@ -56,7 +57,8 @@ export function ProfilePage(props) {
                     </InfiniteScroll>
                 }
 
-            </div>
-        </Awaited>
+
+            </Awaited>
+        </div>
     )
 }
