@@ -1,4 +1,4 @@
-import {Container, Nav, Navbar} from "react-bootstrap";
+import {Button, Container, Nav, Navbar} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 import {fbAuth} from "../services/firebase";
 import {useAuthContext} from "../contexts/authContext";
@@ -32,12 +32,11 @@ export function Header() {
                             !loading && !username &&
                             <>
                                 <LinkContainer to={"/login"} onClick={() => setActiveLink("login")}
-                                               active={activeLink === "login"}>
+                                               active={activeLink === "login"} className={"me-3"}>
                                     <Nav.Link>Login</Nav.Link>
                                 </LinkContainer>
-                                <LinkContainer to={"/register"} onClick={() => setActiveLink("register")}
-                                               active={activeLink === "register"}>
-                                    <Nav.Link>Sign up</Nav.Link>
+                                <LinkContainer to={"/register"}>
+                                    <Button>Sign up</Button>
                                 </LinkContainer>
                             </>
                         }
