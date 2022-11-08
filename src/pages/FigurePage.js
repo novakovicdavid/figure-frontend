@@ -9,6 +9,7 @@ export function FigurePage() {
     const [imageURL, setImageURL] = useState("");
     const [figureData, setFigureData] = useState();
     const [style, setStyle] = useState({display: "grid"})
+    const [imageStyle, setImageStyle] = useState({})
     useEffect(() => {
         urlPromise.then((imageUrl) => {
             setImageURL(imageUrl);
@@ -17,6 +18,7 @@ export function FigurePage() {
         docPromise.then((doc) => {
             setFigureData(doc.data());
             setStyle({});
+            setImageStyle({aspectRatio: doc.data().sizex + ' / ' + doc.data().sizey})
         });
     }, [urlPromise, docPromise])
 
@@ -26,7 +28,7 @@ export function FigurePage() {
                     <Awaited awaiting={urlPromise} style={{placeSelf: "center", gridRow: "1"}}>
                         {
                             imageURL &&
-                            <Card.Img variant={"top"} src={imageURL}/>
+                            <Card.Img variant={"top"} src={imageURL} style={imageStyle}/>
                         }
                     </Awaited>
                     <Awaited awaiting={docPromise} style={{placeSelf: "center", gridRow: "2"}}>
