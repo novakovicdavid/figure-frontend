@@ -6,7 +6,7 @@ export function Awaited(props) {
         <>
             {
                 isLoading &&
-                <Spinner animation={"border"} style={{placeSelf: "center"}}/>
+                <Spinner animation={"border"} style={{placeSelf: "center", gridRow: "1 / -1", gridColumn: "1 / 2"}}/>
             }
             {
                 !isLoading &&
