@@ -18,7 +18,6 @@ export function ProfilePage(props) {
     const username = useParams().username;
     const figuresFromLoader = useLoaderData();
     const [figures, setFigures] = useState([]);
-    const [isLoading, setLoading] = useState(true)
     const [countOfNewFigures, setCountOfNewFigures] = useState(0);
     const {collectionRef, queryOrder, queryMaxItems, limitOfNewItems} = props;
 
@@ -26,7 +25,6 @@ export function ProfilePage(props) {
         figuresFromLoader.docs.then((newFigures) => {
             setCountOfNewFigures(newFigures.length);
             setFigures(newFigures);
-            setLoading(false);
         });
     }, [figuresFromLoader]);
 
@@ -34,7 +32,7 @@ export function ProfilePage(props) {
         <div id={"scroller"} className={"overflow-scroll"}
              style={{display: "grid", justifySelf: "center", width: "100vw"}}>
             <div className={"sticky-top"} style={{display: "grid", placeItems: "center", gridRow: "1 / 2", gridColumn: "1 / 2", height: "2em", backdropFilter: "blur(10px)"}}>{username}</div>
-            <Awaited isLoading={isLoading}>
+            <Awaited awaiting={figuresFromLoader.docs} style={{placeSelf: "center", gridRow: "1 / -1", gridColumn: "1 / 2"}}>
                 {
                     figures.length > 0 &&
                     <InfiniteScroll style={{display: "flex", flexDirection: "column", alignItems: "center"}}

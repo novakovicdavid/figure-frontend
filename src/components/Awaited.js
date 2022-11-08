@@ -1,15 +1,20 @@
 import {Spinner} from "react-bootstrap";
+import {useEffect, useState} from "react";
 
 export function Awaited(props) {
-    const {isLoading, children} = props;
+    const {awaiting, children, style} = props;
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        awaiting.then(() => setLoading(false));
+    }, [])
     return(
         <>
             {
-                isLoading &&
-                <Spinner animation={"border"} style={{placeSelf: "center", gridRow: "1 / -1", gridColumn: "1 / 2"}}/>
+                loading &&
+                <Spinner animation={"border"} style={style}/>
             }
             {
-                !isLoading &&
+                !loading &&
                 <>
                     {children}
                 </>
