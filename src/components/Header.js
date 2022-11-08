@@ -30,11 +30,16 @@ export function Header() {
                     <Nav>
                         {
                             !loading && !user &&
-                            <LinkContainer to={"/register"} onClick={() => setActiveLink("register")}
-                                           active={activeLink === "register"}>
-                                <Nav.Link>Sign up</Nav.Link>
-                            </LinkContainer>
-
+                            <>
+                                <LinkContainer to={"/login"} onClick={() => setActiveLink("login")}
+                                               active={activeLink === "login"}>
+                                    <Nav.Link>Login</Nav.Link>
+                                </LinkContainer>
+                                <LinkContainer to={"/register"} onClick={() => setActiveLink("register")}
+                                               active={activeLink === "register"}>
+                                    <Nav.Link>Sign up</Nav.Link>
+                                </LinkContainer>
+                            </>
                         }
                         {
                             user &&

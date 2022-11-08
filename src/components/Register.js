@@ -21,21 +21,22 @@ function handleRegister(username, email, password, setCreatingAccount, setUserui
     }
     setCreatingAccount(true);
     CheckIsUsernameTaken(username).then((isUsernameTaken) => {
-        if(!isUsernameTaken) {
-            createUserWithEmailAndPassword(fbAuth, email, password).then((userCreds) => {
-                const useruid = userCreds.user.uid;
-                addDoc(collection(fbFirestore, "users"), {
-                    username: username,
-                    uuid: useruid
-                }).then(() => {
-                    setUseruid(useruid);
+        if (!isUsernameTaken) {
+            createUserWithEmailAndPassword(fbAuth, email, password)
+                .then((userCreds) => {
+                    const useruid = userCreds.user.uid;
+                    addDoc(collection(fbFirestore, "users"), {
+                        username: username,
+                        uuid: useruid
+                    }).then(() => {
+                        setUseruid(useruid);
+                    })
                 })
-            }).catch((error) => {
-                if (error.message.includes("already-in-use")) setError("Email already taken.");
-                else setError(error.message);
-            });
-        }
-        else {
+                .catch((error) => {
+                    if (error.message.includes("already-in-use")) setError("Email already taken.");
+                    else setError(error.message);
+                });
+        } else {
             setError("Username already taken.");
         }
     });
@@ -56,7 +57,7 @@ export function Register() {
 
     useEffect(() => {
         if (error.length > 0) setCreatingAccount(false);
-    })
+    }, [error])
 
     return (
         <Form noValidate validated={validated} onSubmit={(e) => {
@@ -77,7 +78,8 @@ export function Register() {
             </Form.Group>
             <Form.Group controlId={"description"} className={"mb-3"}>
                 <Form.Label>Password</Form.Label>
-                <Form.Control type={"password"} value={password} onChange={(e) => setPassword(e.target.value)} required/>
+                <Form.Control type={"password"} value={password} onChange={(e) => setPassword(e.target.value)}
+                              required/>
                 <Form.Control.Feedback type={"invalid"}>Please provide a password.</Form.Control.Feedback>
             </Form.Group>
             <Button variant="primary" type="submit" disabled={creatingAccount}>
