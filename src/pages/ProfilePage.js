@@ -33,7 +33,7 @@ export function ProfilePage(props) {
     return (
         <div id={"scroller"} className={"overflow-scroll"}
              style={{display: "grid", justifySelf: "center", width: "100vw"}}>
-            <div className={"sticky-top"} style={{display: "grid", placeItems: "center", height: "2em", backdropFilter: "blur(10px)"}}>{username}</div>
+            <div className={"sticky-top"} style={{display: "grid", placeItems: "center", gridRow: "1 / 2", gridColumn: "1 / 2", height: "2em", backdropFilter: "blur(10px)"}}>{username}</div>
             <Awaited isLoading={isLoading}>
                 {
                     figures.length > 0 &&
@@ -56,8 +56,6 @@ export function ProfilePage(props) {
                         </div>
                     </InfiniteScroll>
                 }
-
-
             </Awaited>
         </div>
     )
