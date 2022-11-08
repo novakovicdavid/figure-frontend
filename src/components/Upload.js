@@ -14,13 +14,11 @@ function handleUpload(event, title, description, file, useruid, navigate, setUpl
     const uuid = uuidv4();
     if (!file || !title || !description) return;
     setUploading(true);
-
     const metadata = {
         customMetadata: {
             'user': useruid
         }
     }
-
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (e) => {
@@ -42,8 +40,6 @@ function handleUpload(event, title, description, file, useruid, navigate, setUpl
             });
         }
     }
-
-
 }
 
 export function Upload(props) {
