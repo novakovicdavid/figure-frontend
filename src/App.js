@@ -73,7 +73,10 @@ function App() {
                     loader: ({params}) => {
                         const referenceStorage = ref(fbStorage, 'figures/' + params.figureid);
                         const referenceDb = doc(fbFirestore, 'figures', params.figureid);
-                        return [getDownloadURL(referenceStorage), getDoc(referenceDb)];
+                        return defer({
+                            urlPromise: getDownloadURL(referenceStorage),
+                            docPromise: getDoc(referenceDb)
+                        });
                     }
                 },
                 {

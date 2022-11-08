@@ -1,38 +1,38 @@
-import {Link, useLoaderData} from "react-router-dom";
+import {useLoaderData} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {Card} from "react-bootstrap";
+import {LinkContainer} from 'react-router-bootstrap'
 
 export function FigurePage() {
-    const [imageUrlPromiseFromLoader, figureDocPromiseFromLoader] = useLoaderData();
+    const {urlPromise, docPromise} = useLoaderData();
     const [imageURL, setImageURL] = useState("");
     const [figureData, setFigureData] = useState();
     useEffect(() => {
-        async function fetchURL() {
-            setImageURL(await imageUrlPromiseFromLoader);
-        }
+        urlPromise.then((imageUrl) => setImageURL(imageUrl));
+        docPromise.then((doc) => {
+            setFigureData(doc.data());
+        })
+    }, [urlPromise, docPromise])
 
-        async function fetchFigureMetadata() {
-            figureDocPromiseFromLoader.then((doc) => {
-                setFigureData(doc.data());
-            })
-        }
-
-        Promise.all([fetchURL(), fetchFigureMetadata()]);
-    }, [imageUrlPromiseFromLoader])
-
-    console.log(figureData);
     return (
         <div>
             {
                 imageURL &&
-                <img src={imageURL}/>
+                <Card></Card>
             }
             {
                 figureData &&
-                <div>
-                    <p>{figureData.title}</p>
-                    <p>{figureData.description}</p>
-                    <Link to={'/profile/' + figureData.user}>{figureData.user}</Link>
-                </div>
+                <Card>
+                    <Card.Img variant={"top"} src={imageURL}/>
+                    <Card.Body>
+                        <Card.Title>{figureData.title}</Card.Title>
+                        <Card.Text>{figureData.description}</Card.Text>
+                        {"By "}
+                        <LinkContainer to={'/profile/' + figureData.user}>
+                            <Card.Link>{figureData.user}</Card.Link>
+                        </LinkContainer>
+                    </Card.Body>
+                </Card>
             }
         </div>
     )
