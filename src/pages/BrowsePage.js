@@ -14,7 +14,7 @@ function getAndAppendFigures(figures, setFigures, setCountOfNewFigures, username
     });
 }
 
-export function ProfilePage(props) {
+export function BrowsePage(props) {
     const username = useParams().username;
     const figuresFromLoader = useLoaderData();
     const [figures, setFigures] = useState([]);
@@ -31,7 +31,10 @@ export function ProfilePage(props) {
     return (
         <div id={"scroller"} className={"overflow-scroll"}
              style={{display: "grid", justifySelf: "center", width: "100vw"}}>
-            <div className={"sticky-top"} style={{display: "grid", placeItems: "center", gridRow: "1 / 2", gridColumn: "1 / 2", height: "2em", backdropFilter: "blur(10px)"}}>{username}</div>
+            {
+                username &&
+                <div className={"sticky-top"} style={{display: "grid", placeItems: "center", gridRow: "1 / 2", gridColumn: "1 / 2", height: "2em", backdropFilter: "blur(10px)"}}>{username}</div>
+            }
             <Awaited awaiting={figuresFromLoader.docs} style={{placeSelf: "center", gridRow: "1 / -1", gridColumn: "1 / 2"}}>
                 {
                     figures.length > 0 &&

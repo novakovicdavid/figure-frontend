@@ -4,7 +4,7 @@ import './App.css';
 import {Header} from "./components/Header";
 import {createBrowserRouter, defer, Outlet, RouterProvider} from "react-router-dom";
 import {HomePage} from "./pages/HomePage";
-import {ProfilePage} from "./pages/ProfilePage";
+import {BrowsePage} from "./pages/BrowsePage";
 import {RegisterPage} from "./pages/RegisterPage";
 import {ErrorPage} from "./pages/ErrorPage";
 import {LoginPage} from "./pages/LoginPage";
@@ -61,10 +61,18 @@ function App() {
                 },
                 {
                     path: "/profile/:username",
-                    element: <ProfilePage collectionRef={collectionRef} queryOrder={queryOrder}
+                    element: <BrowsePage collectionRef={collectionRef} queryOrder={queryOrder}
                                           queryMaxItems={queryMaxItems} limitOfNewItems={limitOfNewItems}/>,
                     loader: ({params}) => {
                         return defer({docs: fetchFirstFigures(queryOrder, queryMaxItems, params.username)})
+                    }
+                },
+                {
+                    path: "/browse",
+                    element: <BrowsePage collectionRef={collectionRef} queryOrder={queryOrder}
+                                         queryMaxItems={queryMaxItems} limitOfNewItems={limitOfNewItems}/>,
+                    loader: () => {
+                        return defer({docs: fetchFirstFigures(queryOrder, queryMaxItems)})
                     }
                 },
                 {
