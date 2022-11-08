@@ -21,7 +21,6 @@ function Figure(props) {
 
 export function Figures(props) {
     const {figures} = props;
-    console.log(figures);
     return (
         <Container>
             {
