@@ -2,7 +2,7 @@ import {Card, Col, Container, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
 function Figure(props) {
-    const {id, url, title, width, height, user} = props;
+    const {id, url, title, width, height, user, isProfilePage} = props;
     return (
         <Row>
             <Col>
@@ -11,8 +11,10 @@ function Figure(props) {
                         <Card.Img variant={"top"} src={url} style={{aspectRatio: width + ' / ' + height}}/>
                         <Card.Header as={"h5"}>{title}</Card.Header>
                     </Link>
-                    <p className={"ms-3 mt-1 mb-1"}>{user}</p>
-
+                    {
+                        !isProfilePage &&
+                        <p className={"ms-3 mt-1 mb-1"}>{user}</p>
+                    }
                 </Card>
             </Col>
         </Row>
@@ -20,13 +22,13 @@ function Figure(props) {
 }
 
 export function Figures(props) {
-    const {figures} = props;
+    const {figures, isProfilePage} = props;
     return (
         <Container>
             {
                 figures.map((figure) =>
                     <Figure id={figure.id} url={figure.url} title={figure.data().title} width={figure.data().sizex}
-                            height={figure.data().sizey} user={figure.data().user} key={figure.id}/>
+                            height={figure.data().sizey} user={figure.data().user} isProfilePage={isProfilePage} key={figure.id}/>
                 )
             }
         </Container>

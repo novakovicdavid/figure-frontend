@@ -58,7 +58,7 @@ export function BrowsePage(props) {
                                     scrollableTarget={"scroller"}
                     >
                         <div style={{width: "100%", maxWidth: "720px"}}>
-                            <Figures figures={figures}/>
+                            <Figures figures={figures} isProfilePage={!!username}/>
                         </div>
                     </InfiniteScroll>
                 }
