@@ -1,7 +1,7 @@
 export function Footer() {
     return(
         <div style={{display: "grid", placeItems: "center"}}>
-            Copyright © David Blablabla
+            <small>Copyright © David Blablabla</small>
         </div>
     )
 }
