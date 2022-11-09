@@ -35,7 +35,7 @@ export function HomePage() {
                                 <h1 className={"display-6"} style={{fontSize: "4em"}}><b>The platform for creative
                                     minds.</b></h1>
                                 <p className={"display-1 mt-0"} style={{fontSize: "1.5em"}}>Upload to your
-                                    hearts content. No limits, forever(*).</p>
+                                    heart's content. No limits, forever(*).</p>
                             </Row>
                             <Row className={"mt-3"}>
                                 <Col className={"align-items-stretch d-flex"}>
