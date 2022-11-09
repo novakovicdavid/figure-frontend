@@ -29,13 +29,6 @@ export function Header() {
                                        active={activeLink === "browse"}>
                             <Nav.Link>Browse</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to={"/about"} onClick={() => {
-                            setActiveLink("about");
-                            setExpanded(false);
-                        }}
-                                       active={activeLink === "about"}>
-                            <Nav.Link>About</Nav.Link>
-                        </LinkContainer>
                     </Nav>
                     <Nav>
                         {
