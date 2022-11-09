@@ -75,6 +75,7 @@ export function HomePage() {
                 }
 
             </div>
+            <small>(*) Until I take it down, probably friday evening.</small>
             {/*Inspired by https://saaslandingpage.com/templates/creative/*/}
         </Container>
     )
