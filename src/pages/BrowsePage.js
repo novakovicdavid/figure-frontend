@@ -20,6 +20,7 @@ export function BrowsePage(props) {
     const [figures, setFigures] = useState([]);
     const [countOfNewFigures, setCountOfNewFigures] = useState(0);
     const {collectionRef, queryOrder, queryMaxItems, limitOfNewItems} = props;
+    const [infinityScrollStyle, setInfinityScrollStyle] = useState({display: "flex", flexDirection: "column", alignItems: "center", opacity: 0, transition: "opacity 0.5s"})
 
     useEffect(() => {
         figuresFromLoader.docs.then((newFigures) => {
@@ -27,6 +28,10 @@ export function BrowsePage(props) {
             setFigures(newFigures);
         });
     }, [figuresFromLoader]);
+
+    useEffect(() => {
+        if (figures.length > 0) setInfinityScrollStyle({display: "flex", flexDirection: "column", alignItems: "center", opacity: 1, transition: "opacity 0.5s"});
+    }, [figures])
 
     return (
         <div id={"scroller"} className={"overflow-scroll"}
@@ -38,7 +43,7 @@ export function BrowsePage(props) {
             <Awaited awaiting={figuresFromLoader.docs} style={{placeSelf: "center", gridRow: "1 / -1", gridColumn: "1 / 2"}}>
                 {
                     figures.length > 0 &&
-                    <InfiniteScroll style={{display: "flex", flexDirection: "column", alignItems: "center"}}
+                    <InfiniteScroll style={infinityScrollStyle}
                                     dataLength={figures.length}
                                     next={() => {
                                         getAndAppendFigures(figures, setFigures, setCountOfNewFigures, username, collectionRef, queryOrder, queryMaxItems)
