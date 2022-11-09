@@ -7,7 +7,7 @@ export function FigureTease(props) {
         <Row className={"gap-4 justify-content-center position-relative"}>
             {
                 figures.map((figure) =>
-                    <Col className={"p-0"} xs={12} sm={3} md={2} style={{objectFit: "cover"}}>
+                    <Col key={figure.id} className={"p-0"} xs={12} sm={3} md={2} style={{objectFit: "cover"}}>
                         <img src={figure.url} style={{width: "100%", height: "100%", objectFit: "cover", aspectRatio: figure.data().sizex + " / " + figure.data().sizey}}/>
                     </Col>
                 )
