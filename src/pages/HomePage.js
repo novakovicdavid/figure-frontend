@@ -67,6 +67,10 @@ export function HomePage() {
             </Row>
             <div className={"p-4 p-sm-5"} style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 {
+                    !latestFigures &&
+                    <div style={{height: "47.375em"}}/>
+                }
+                {
                     latestFigures &&
                     <div className={"p-0"} style={{maxWidth: "70em", width: "100%"}} data-aos={"fade-up"}>
                         <h2 className={"p-0 mb-4 mt-4"}>Latest Figures</h2>
