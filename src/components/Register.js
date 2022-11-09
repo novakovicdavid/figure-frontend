@@ -69,17 +69,17 @@ export function Register() {
             }}>
                 <Form.Group controlId={"title"} className={"mb-3"}>
                     <Form.Label>Username:</Form.Label>
-                    <Form.Control type={"text"} onChange={(e) => setUsername(e.target.value)} required/>
+                    <Form.Control type={"text"} placeholder={"john-doe"} onChange={(e) => setUsername(e.target.value)} required/>
                     <Form.Control.Feedback type={"invalid"}>Please provide a username.</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId={"title"} className={"mb-3"}>
                     <Form.Label>Email:</Form.Label>
-                    <Form.Control type={"text"} value={email} onChange={(e) => setEmail(e.target.value)} required/>
+                    <Form.Control type={"text"} placeholder={"john@doe.com"} value={email} onChange={(e) => setEmail(e.target.value)} required/>
                     <Form.Control.Feedback type={"invalid"}>Please provide an email.</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId={"description"} className={"mb-3"}>
                     <Form.Label>Password:</Form.Label>
-                    <Form.Control type={"password"} value={password} onChange={(e) => setPassword(e.target.value)}
+                    <Form.Control type={"password"} placeholder={"******"} value={password} onChange={(e) => setPassword(e.target.value)}
                                   required/>
                     <Form.Control.Feedback type={"invalid"}>Please provide a password.</Form.Control.Feedback>
                 </Form.Group>
