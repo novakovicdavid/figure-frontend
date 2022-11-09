@@ -42,7 +42,6 @@ export function BrowsePage(props) {
             }
             <Awaited awaiting={figuresFromLoader.docs} style={{placeSelf: "center", gridRow: "1 / -1", gridColumn: "1 / 2"}}>
                 {
-                    figures.length > 0 &&
                     <InfiniteScroll style={infinityScrollStyle}
                                     dataLength={figures.length}
                                     next={() => {
