@@ -69,7 +69,7 @@ export function HomePage() {
                 {
                     latestFigures &&
                     <div className={"p-0"} style={{maxWidth: "70em", width: "100%"}} data-aos={"fade-up"}>
-                        <h2 className={"p-0"}>Latest Figures</h2>
+                        <h2 className={"p-0 mb-4 mt-4"}>Latest Figures</h2>
                         <FigureTease figures={latestFigures}/>
                     </div>
                 }
