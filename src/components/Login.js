@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {Alert, Button, Form, Spinner} from "react-bootstrap";
+import {Alert, Button, Form, Row, Spinner} from "react-bootstrap";
 import {signInWithEmailAndPassword} from "firebase/auth";
 import {fbAuth} from "../services/firebase";
 import {useAuthContext} from "../contexts/authContext";
@@ -39,34 +39,36 @@ export function Login() {
     }, [error])
 
     return (
-        <Form noValidate validated={validated} onSubmit={(e) => {
-            e.preventDefault();
-            setError("");
-            setValidated(true);
-            handleLogin(email, password, setSigningIn, setUseruid, setError);
-        }}>
-            <Form.Group controlId={"title"} className={"mb-3"}>
-                <Form.Label>Email</Form.Label>
-                <Form.Control type={"text"} value={email} onChange={(e) => setEmail(e.target.value)} required/>
-                <Form.Control.Feedback type={"invalid"}>Please provide your email.</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId={"description"} className={"mb-3"}>
-                <Form.Label>Password</Form.Label>
-                <Form.Control type={"password"} value={password} onChange={(e) => setPassword(e.target.value)}
-                              required/>
-                <Form.Control.Feedback type={"invalid"}>Please provide your password.</Form.Control.Feedback>
-            </Form.Group>
-            <Button variant="primary" type="submit" disabled={signingIn}>
+        <Row className={"ms-sm-auto me-sm-auto mb-auto ms-3 me-3 mt-4 border rounded p-3"}>
+            <Form noValidate validated={validated} onSubmit={(e) => {
+                e.preventDefault();
+                setError("");
+                setValidated(true);
+                handleLogin(email, password, setSigningIn, setUseruid, setError);
+            }}>
+                <Form.Group controlId={"title"} className={"mb-3"}>
+                    <Form.Label>Email:</Form.Label>
+                    <Form.Control type={"text"} value={email} onChange={(e) => setEmail(e.target.value)} required/>
+                    <Form.Control.Feedback type={"invalid"}>Please provide your email.</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId={"description"} className={"mb-3"}>
+                    <Form.Label>Password:</Form.Label>
+                    <Form.Control type={"password"} value={password} onChange={(e) => setPassword(e.target.value)}
+                                  required/>
+                    <Form.Control.Feedback type={"invalid"}>Please provide your password.</Form.Control.Feedback>
+                </Form.Group>
+                <Button variant="primary" type="submit" disabled={signingIn}>
+                    {
+                        signingIn &&
+                        <Spinner as={"span"} animation={"border"} size={"sm"} className={"me-1"}/>
+                    }
+                    {signingIn ? "Signing in..." : "Sign in"}
+                </Button>
                 {
-                    signingIn &&
-                    <Spinner as={"span"} animation={"border"} size={"sm"} className={"me-1"}/>
+                    error.length > 0 &&
+                    <Alert className={"mt-3"} variant={"danger"}>{error}</Alert>
                 }
-                {signingIn ? "Signing in..." : "Sign in"}
-            </Button>
-            {
-                error.length > 0 &&
-                <Alert className={"mt-3"} variant={"danger"}>{error}</Alert>
-            }
-        </Form>
+            </Form>
+        </Row>
     )
 }

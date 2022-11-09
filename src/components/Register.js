@@ -1,4 +1,4 @@
-import {Alert, Button, Form, Spinner} from "react-bootstrap";
+import {Alert, Button, Form, Row, Spinner} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {fbAuth, fbFirestore} from "../services/firebase";
 import {useNavigate} from "react-router-dom";
@@ -60,39 +60,41 @@ export function Register() {
     }, [error])
 
     return (
-        <Form noValidate validated={validated} onSubmit={(e) => {
-            e.preventDefault();
-            setError("");
-            setValidated(true);
-            handleRegister(username, email, password, setCreatingAccount, setUseruid, setError);
-        }}>
-            <Form.Group controlId={"title"} className={"mb-3"}>
-                <Form.Label>Username</Form.Label>
-                <Form.Control type={"text"} onChange={(e) => setUsername(e.target.value)} required/>
-                <Form.Control.Feedback type={"invalid"}>Please provide a username.</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId={"title"} className={"mb-3"}>
-                <Form.Label>Email</Form.Label>
-                <Form.Control type={"text"} value={email} onChange={(e) => setEmail(e.target.value)} required/>
-                <Form.Control.Feedback type={"invalid"}>Please provide an email.</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId={"description"} className={"mb-3"}>
-                <Form.Label>Password</Form.Label>
-                <Form.Control type={"password"} value={password} onChange={(e) => setPassword(e.target.value)}
-                              required/>
-                <Form.Control.Feedback type={"invalid"}>Please provide a password.</Form.Control.Feedback>
-            </Form.Group>
-            <Button variant="primary" type="submit" disabled={creatingAccount}>
+        <Row className={"ms-sm-auto me-sm-auto mb-auto ms-3 me-3 mt-4 border rounded p-3"}>
+            <Form noValidate validated={validated} onSubmit={(e) => {
+                e.preventDefault();
+                setError("");
+                setValidated(true);
+                handleRegister(username, email, password, setCreatingAccount, setUseruid, setError);
+            }}>
+                <Form.Group controlId={"title"} className={"mb-3"}>
+                    <Form.Label>Username:</Form.Label>
+                    <Form.Control type={"text"} onChange={(e) => setUsername(e.target.value)} required/>
+                    <Form.Control.Feedback type={"invalid"}>Please provide a username.</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId={"title"} className={"mb-3"}>
+                    <Form.Label>Email:</Form.Label>
+                    <Form.Control type={"text"} value={email} onChange={(e) => setEmail(e.target.value)} required/>
+                    <Form.Control.Feedback type={"invalid"}>Please provide an email.</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId={"description"} className={"mb-3"}>
+                    <Form.Label>Password:</Form.Label>
+                    <Form.Control type={"password"} value={password} onChange={(e) => setPassword(e.target.value)}
+                                  required/>
+                    <Form.Control.Feedback type={"invalid"}>Please provide a password.</Form.Control.Feedback>
+                </Form.Group>
+                <Button variant="primary" type="submit" disabled={creatingAccount}>
+                    {
+                        creatingAccount &&
+                        <Spinner as={"span"} animation={"border"} size={"sm"} className={"me-1"}/>
+                    }
+                    {creatingAccount ? "Creating Account..." : "Create Account"}
+                </Button>
                 {
-                    creatingAccount &&
-                    <Spinner as={"span"} animation={"border"} size={"sm"} className={"me-1"}/>
+                    error.length > 0 &&
+                    <Alert className={"mt-3"} variant={"danger"}>{error}</Alert>
                 }
-                {creatingAccount ? "Creating Account..." : "Create Account"}
-            </Button>
-            {
-                error.length > 0 &&
-                <Alert className={"mt-3"} variant={"danger"}>{error}</Alert>
-            }
-        </Form>
+            </Form>
+        </Row>
     )
 }
