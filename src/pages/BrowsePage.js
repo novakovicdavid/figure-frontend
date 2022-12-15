@@ -30,7 +30,11 @@ export function BrowsePage(props) {
     }, [figuresFromLoader]);
 
     useEffect(() => {
-        if (figures.length > 0) setInfinityScrollStyle({display: "flex", flexDirection: "column", alignItems: "center", opacity: 1, transition: "opacity 0.5s"});
+        if (figures.length > 0) {
+            requestAnimationFrame(() => {
+                setInfinityScrollStyle({display: "flex", flexDirection: "column", alignItems: "center", opacity: 1, transition: "opacity 0.5s"});
+            });
+        }
     }, [figures])
 
     return (
