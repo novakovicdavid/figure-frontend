@@ -59,6 +59,7 @@ export function BrowsePage(props) {
                                         </p>
                                     }
                                     scrollableTarget={"scroller"}
+                                    scrollThreshold={0.6}
                     >
                         <div style={{width: "100%", maxWidth: "720px"}}>
                             <Figures figures={figures} isProfilePage={!!username}/>
