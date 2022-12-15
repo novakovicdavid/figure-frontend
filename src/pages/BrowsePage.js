@@ -5,6 +5,7 @@ import {fetchNextFigures} from "../utilities/FigureFetching";
 import {Figures} from "../components/Figures";
 import {Awaited} from "../components/Awaited";
 import '../styling/no-scroll.css'
+import {Spinner} from "react-bootstrap";
 
 function getAndAppendFigures(figures, setFigures, setCountOfNewFigures, username, collectionRef, queryOrder, queryMaxItems) {
     const lastDoc = figures[figures.length - 1];
@@ -52,7 +53,7 @@ export function BrowsePage(props) {
                                         getAndAppendFigures(figures, setFigures, setCountOfNewFigures, username, collectionRef, queryOrder, queryMaxItems)
                                     }}
                                     hasMore={countOfNewFigures === limitOfNewItems}
-                                    loader={<></>}
+                                    loader={<div style={{height: '2.5rem'}}><Spinner animation={"border"}/></div>}
                                     endMessage={
                                         <p style={{textAlign: 'center'}}>
                                             <b>Yay! You have seen it all</b>
