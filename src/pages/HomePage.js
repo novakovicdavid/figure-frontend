@@ -1,10 +1,9 @@
 import {Button, Col, Container, Image, Row} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 import {useLoaderData} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useLayoutEffect, useMemo, useState} from "react";
 import {FigureTease} from "../components/FigureTease";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import {useInView} from "react-intersection-observer";
 
 export function HomePage() {
     const {totalFiguresPromise, totalUsersPromise, latestFiguresPromise} = useLoaderData();
@@ -12,7 +11,6 @@ export function HomePage() {
     const [totalUsers, setTotalUsers] = useState("...")
     const [latestFigures, setLatestFigures] = useState();
     useEffect(() => {
-        AOS.init();
         totalFiguresPromise.then((total) => {
             setTotalFigures(total);
         });
@@ -22,13 +20,36 @@ export function HomePage() {
         latestFiguresPromise.then((urls) => {
             setLatestFigures(urls);
         })
-    }, [])
+    }, []);
+
+    // Fade in Landing part
+    const [landingStyle, setLandingStyle] = useState({visibility: 'hidden', opacity: 0});
+    useEffect(() => {
+        setLandingStyle({visibility: 'visible', opacity: 1, transform: 'translate(0, 0)'})
+    }, []);
+
+    // Fade in Figure teaser
+    const [teaserStyle, setTeaserStyle] = useState({visibility: 'hidden', opacity: 0});
+    const {ref, inView} = useInView({
+        threshold: 0.2,
+    });
+    useLayoutEffect(() => {
+        console.log(inView);
+        if (teaserStyle.opacity === 0 && inView) setTeaserStyle({visibility: 'visible', opacity: 1, transform: 'translate(0, 0)'})
+    }, [inView]);
+
 
     return (
         <Container fluid>
             <Row className={"text-bg-light p-4 pt-5 p-sm-5"}
-                 style={{display: "flex", flexDirection: "column", placeItems: "center"}}>
-                <Col className={"p-0 pt-5"} style={{maxWidth: "70em"}} data-aos={"fade-up"}>
+                 style={{display: "flex", flexDirection: "column", placeItems: "center", position: "relative"}}>
+                <Col className={"p-0 pt-0 pt-sm-5"}
+                     style={{
+                         maxWidth: "70em",
+                         transition: 'visibility 0.2s linear, opacity 0.2s linear, transform 0.4s ease',
+                         transform: 'translate(0, 5em)',
+                         ...landingStyle
+                     }}>
                     <Row>
                         <Col md={8} lg={8} xxl={8}>
                             <Row>
@@ -58,27 +79,32 @@ export function HomePage() {
                         </Col>
                         <Col md={4} lg={4} xxl={4} style={{display: "flex", alignItems: "center"}}>
                             <div style={{maxWidth: "100%"}}>
-                                <Image fluid src={"https://i.imgur.com/E2tqE3F.png"}
-                                       style={{minHeight: "18.75em", minWidth: "18.75em"}}/>
+                                <Image fluid src={"https://i.imgur.com/E2tqE3F.png"}/>
                             </div>
                         </Col>
                     </Row>
                 </Col>
             </Row>
-            <div className={"p-4 p-sm-5"} style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+            <Row className={"p-4 p-sm-5"} style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 {
                     !latestFigures &&
                     <div style={{height: "47.375em"}}/>
                 }
                 {
                     latestFigures &&
-                    <div className={"p-0"} style={{maxWidth: "70em", width: "100%"}} data-aos={"fade-up"}>
+                    <Row className={"p-0 gap-4 justify-content-center position-relative"}
+                         style={{
+                             maxWidth: "70em",
+                             width: "100%",
+                             transition: 'visibility 0.2s linear, opacity 0.2s linear, transform 0.4s ease',
+                             transform: 'translate(0, 5em)',
+                             ...teaserStyle
+                         }} ref={ref}>
                         <h2 className={"p-0 mb-4 mt-4"}>Latest Figures</h2>
                         <FigureTease figures={latestFigures}/>
-                    </div>
+                    </Row>
                 }
-
-            </div>
+            </Row>
             <small>(*) Until I take it down, probably friday evening.</small>
             {/*Inspired by https://saaslandingpage.com/templates/creative/*/}
         </Container>
