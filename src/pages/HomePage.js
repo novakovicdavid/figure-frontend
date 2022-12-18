@@ -10,7 +10,7 @@ export function HomePage() {
     const [totalFigures, setTotalFigures] = useState("...");
     const [totalUsers, setTotalUsers] = useState("...")
     const [latestFigures, setLatestFigures] = useState();
-    useEffect(() => {
+    useMemo(() => {
         totalFiguresPromise.then((total) => {
             setTotalFigures(total);
         });
@@ -19,7 +19,7 @@ export function HomePage() {
         });
         latestFiguresPromise.then((urls) => {
             setLatestFigures(urls);
-        })
+        });
     }, []);
 
     // Fade in Landing part
@@ -31,11 +31,12 @@ export function HomePage() {
     // Fade in Figure teaser
     const [teaserStyle, setTeaserStyle] = useState({visibility: 'hidden', opacity: 0});
     const {ref, inView} = useInView({
-        threshold: 0.2,
+        threshold: 1,
     });
     useLayoutEffect(() => {
-        console.log(inView);
-        if (teaserStyle.opacity === 0 && inView) setTeaserStyle({visibility: 'visible', opacity: 1, transform: 'translate(0, 0)'})
+        if (teaserStyle.opacity === 0 && inView)
+            requestAnimationFrame(() =>
+                setTeaserStyle({visibility: 'visible', opacity: 1, transform: 'translate(0, 0)'}));
     }, [inView]);
 
 
@@ -85,7 +86,13 @@ export function HomePage() {
                     </Row>
                 </Col>
             </Row>
-            <Row className={"p-4 p-sm-5"} style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+            <Row className={"p-4 p-sm-5"}
+                 style={{position: 'relative', display: "flex", flexDirection: "column", alignItems: "center"}}>
+                {/* Fade in trigger */}
+                {
+                    latestFigures && teaserStyle.opacity === 0 &&
+                    <div ref={ref} style={{position: 'absolute', minHeight: '10em'}}/>
+                }
                 {
                     !latestFigures &&
                     <div style={{height: "47.375em"}}/>
@@ -99,7 +106,7 @@ export function HomePage() {
                              transition: 'visibility 0.2s linear, opacity 0.2s linear, transform 0.4s ease',
                              transform: 'translate(0, 5em)',
                              ...teaserStyle
-                         }} ref={ref}>
+                         }}>
                         <h2 className={"p-0 mb-4 mt-4"}>Latest Figures</h2>
                         <FigureTease figures={latestFigures}/>
                     </Row>
