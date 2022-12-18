@@ -12,7 +12,7 @@ export function FigureTease(props) {
                     </Col>
                 )
             }
-            <div className={"d-flex justify-content-center align-items-end position-absolute bottom-0"} style={{height: "100%", backgroundImage: "linear-gradient(transparent, white 90%)"}}>
+            <div className={"d-flex justify-content-center align-items-end position-absolute bottom-0"} style={{height: "30em", backgroundImage: "linear-gradient(transparent, white 90%)"}}>
                 <LinkContainer to={"/register"}>
                     <Button className={"mb-5"}>Join Figure</Button>
                 </LinkContainer>
