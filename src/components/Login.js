@@ -7,17 +7,31 @@ import {useAuthContext} from "../contexts/authContext";
 
 function handleLogin(email, password, setSigningIn, setUseruid, setError) {
     if (!email || !password) return;
-    setSigningIn(true);
-    signInWithEmailAndPassword(fbAuth, email, password)
-        .then((userCreds) => {
-            setUseruid(userCreds.user.uid);
+    // setSigningIn(true);
+    fetch("http://localhost:8000/users/signin", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password,
         })
-        .catch((error) => {
-            if (error.message.includes("invalid-email")) setError("Invalid email.");
-            else if (error.message.includes("user-not-found")) setError("No user found with matching email.");
-            else if (error.message.includes("wrong-password")) setError("Wrong password.");
-            else setError(error.message);
-        });
+    }).then((response) => {
+        response.json().then((json) => console.log(json));
+    })
+    // signInWithEmailAndPassword(fbAuth, email, password)
+    //     .then((userCreds) => {
+    //         setUseruid(userCreds.user.uid);
+    //     })
+    //     .catch((error) => {
+    //         if (error.message.includes("invalid-email")) setError("Invalid email.");
+    //         else if (error.message.includes("user-not-found")) setError("No user found with matching email.");
+    //         else if (error.message.includes("wrong-password")) setError("Wrong password.");
+    //         else setError(error.message);
+    //     });
 }
 
 export function Login() {

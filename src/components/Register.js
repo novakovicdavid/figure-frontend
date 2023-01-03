@@ -14,32 +14,72 @@ function CheckIsUsernameTaken(username) {
 }
 
 function handleRegister(username, email, password, setCreatingAccount, setUseruid, setError) {
-    if (!username || !email || !password) return;
-    if (!username.match(/^[a-zA-Z\-]+$/)) {
-        setError("Username is not valid. Only the characters A-Z, a-z and '-' are accepted.");
-        return;
-    }
-    setCreatingAccount(true);
-    CheckIsUsernameTaken(username).then((isUsernameTaken) => {
-        if (!isUsernameTaken) {
-            createUserWithEmailAndPassword(fbAuth, email, password)
-                .then((userCreds) => {
-                    const useruid = userCreds.user.uid;
-                    addDoc(collection(fbFirestore, "users"), {
-                        username: username,
-                        uuid: useruid
-                    }).then(() => {
-                        setUseruid(useruid);
-                    })
-                })
-                .catch((error) => {
-                    if (error.message.includes("already-in-use")) setError("Email already taken.");
-                    else setError(error.message);
-                });
-        } else {
-            setError("Username already taken.");
+    // if (!username || !email || !password) return;
+    // if (!username.match(/^[a-zA-Z\-]+$/)) {
+    //     setError("Username is not valid. Only the characters A-Z, a-z and '-' are accepted.");
+    //     return;
+    // }
+    // setCreatingAccount(true);
+
+    fetch("http://localhost:8000/figures/1", {
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            Accept: "application/json"
         }
-    });
+    })
+        .then((response) => {
+            response.json().then((json) => console.log(json));
+        })
+    console.log(JSON.stringify({
+        email: email,
+        password: password,
+        username: username
+    }))
+
+
+    // fetch("http://localhost:8000/users/signup", {
+    //     method: "POST",
+    //     credentials: 'include',
+    //     headers: {
+    //         Accept: "application/json",
+    //         "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //         email: email,
+    //         password: password,
+    //         username: username
+    //     })
+    // })
+    //     .then((response) => {
+    //         response.json().then((json) => console.log(json));
+    //     })
+    // console.log(JSON.stringify({
+    //     email: email,
+    //     password: password,
+    //     username: username
+    // }))
+
+    // CheckIsUsernameTaken(username).then((isUsernameTaken) => {
+    //     if (!isUsernameTaken) {
+    //         createUserWithEmailAndPassword(fbAuth, email, password)
+    //             .then((userCreds) => {
+    //                 const useruid = userCreds.user.uid;
+    //                 addDoc(collection(fbFirestore, "users"), {
+    //                     username: username,
+    //                     uuid: useruid
+    //                 }).then(() => {
+    //                     setUseruid(useruid);
+    //                 })
+    //             })
+    //             .catch((error) => {
+    //                 if (error.message.includes("already-in-use")) setError("Email already taken.");
+    //                 else setError(error.message);
+    //             });
+    //     } else {
+    //         setError("Username already taken.");
+    //     }
+    // });
 }
 
 export function Register() {
