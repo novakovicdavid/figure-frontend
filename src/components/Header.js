@@ -1,12 +1,11 @@
 import {Button, Container, Nav, Navbar} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
-import {fbAuth} from "../services/firebase";
 import {useAuthContext} from "../contexts/authContext";
 import {useState} from "react";
 import {Upload} from "./Upload";
 
 export function Header() {
-    const {username, loading} = useAuthContext()
+    const {profile, signout} = useAuthContext();
     const [activeLink, setActiveLink] = useState("");
     const [showUploadModal, setShowUploadModal] = useState(false);
     const [expanded, setExpanded] = useState(false);
@@ -32,7 +31,7 @@ export function Header() {
                     </Nav>
                     <Nav>
                         {
-                            !loading && !username &&
+                            !profile &&
                             <>
                                 <LinkContainer to={"/login"} onClick={() => {
                                     setActiveLink("login");
@@ -53,7 +52,7 @@ export function Header() {
                             </>
                         }
                         {
-                            username &&
+                            profile &&
                             <Nav.Link onClick={() => {
                                 setActiveLink("upload");
                                 setExpanded(false);
@@ -63,19 +62,19 @@ export function Header() {
                             </Nav.Link>
                         }
                         {
-                            username &&
-                            <LinkContainer to={"/profile/" + username} onClick={() => {
+                            profile &&
+                            <LinkContainer to={"/profile/" + profile.id} onClick={() => {
                                 setActiveLink("profile");
                                 setExpanded(false);
                             }}
                                            active={activeLink === "profile"}>
-                                <Nav.Link>Profile ({username})</Nav.Link>
+                                <Nav.Link>Profile ({profile.username})</Nav.Link>
                             </LinkContainer>
                         }
                         {
-                            username &&
+                            profile &&
                             <Nav.Link onClick={() => {
-                                fbAuth.signOut();
+                                signout();
                                 setExpanded(false);
                             }}>Logout</Nav.Link>
                         }

@@ -1,85 +1,22 @@
 import {Alert, Button, Form, Row, Spinner} from "react-bootstrap";
 import {useEffect, useState} from "react";
-import {fbAuth, fbFirestore} from "../services/firebase";
 import {useNavigate} from "react-router-dom";
-import {addDoc, collection, getDocs, query, where} from "firebase/firestore";
-import {createUserWithEmailAndPassword} from "firebase/auth";
+import {useAuthContext} from "../contexts/authContext";
+import {backend} from "../services/backend";
 
-
-function CheckIsUsernameTaken(username) {
-    const q = query(collection(fbFirestore, "users"), where('username', '==', username));
-    return getDocs(q).then((snapshot) => {
-        return snapshot.docs.length > 0;
-    })
-}
-
-function handleRegister(username, email, password, setCreatingAccount, setUseruid, setError) {
-    // if (!username || !email || !password) return;
-    // if (!username.match(/^[a-zA-Z\-]+$/)) {
-    //     setError("Username is not valid. Only the characters A-Z, a-z and '-' are accepted.");
-    //     return;
-    // }
+function handleRegister(username, email, password, setCreatingAccount, setProfile, setError) {
+    if (!username || !email || !password) return;
+    if (!username.match(/^[a-zA-Z-]+$/)) {
+        setError("Username is not valid. Only the characters A-Z, a-z and '-' are accepted.");
+        return;
+    }
     // setCreatingAccount(true);
-
-    fetch("http://localhost:8000/figures/1", {
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            Accept: "application/json"
-        }
-    })
-        .then((response) => {
-            response.json().then((json) => console.log(json));
-        })
-    console.log(JSON.stringify({
-        email: email,
-        password: password,
-        username: username
-    }))
-
-
-    // fetch("http://localhost:8000/users/signup", {
-    //     method: "POST",
-    //     credentials: 'include',
-    //     headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //         email: email,
-    //         password: password,
-    //         username: username
-    //     })
-    // })
-    //     .then((response) => {
-    //         response.json().then((json) => console.log(json));
-    //     })
-    // console.log(JSON.stringify({
-    //     email: email,
-    //     password: password,
-    //     username: username
-    // }))
-
-    // CheckIsUsernameTaken(username).then((isUsernameTaken) => {
-    //     if (!isUsernameTaken) {
-    //         createUserWithEmailAndPassword(fbAuth, email, password)
-    //             .then((userCreds) => {
-    //                 const useruid = userCreds.user.uid;
-    //                 addDoc(collection(fbFirestore, "users"), {
-    //                     username: username,
-    //                     uuid: useruid
-    //                 }).then(() => {
-    //                     setUseruid(useruid);
-    //                 })
-    //             })
-    //             .catch((error) => {
-    //                 if (error.message.includes("already-in-use")) setError("Email already taken.");
-    //                 else setError(error.message);
-    //             });
-    //     } else {
-    //         setError("Username already taken.");
-    //     }
-    // });
+    backend.signup(email, password, username)
+        .then((result) => {
+            console.log(result);
+            if (result.profile) setProfile(result.profile);
+            else setError(result.error);
+        });
 }
 
 export function Register() {
@@ -88,12 +25,13 @@ export function Register() {
     const [password, setPassword] = useState("");
     const [validated, setValidated] = useState(false);
     const [creatingAccount, setCreatingAccount] = useState(false);
-    const [useruid, setUseruid] = useState(undefined);
+    const {profile, setProfile} = useAuthContext();
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    console.log("error:", error)
     useEffect(() => {
-        if (useruid) navigate("/profile/" + useruid);
-    }, [useruid]);
+        if (profile) navigate("/profile/" + profile.id);
+    }, [navigate, profile]);
 
     useEffect(() => {
         if (error.length > 0) setCreatingAccount(false);
@@ -105,7 +43,7 @@ export function Register() {
                 e.preventDefault();
                 setError("");
                 setValidated(true);
-                handleRegister(username, email, password, setCreatingAccount, setUseruid, setError);
+                handleRegister(username, email, password, setCreatingAccount, setProfile, setError);
             }}>
                 <Form.Group controlId={"title"} className={"mb-3"}>
                     <Form.Label>Username:</Form.Label>
