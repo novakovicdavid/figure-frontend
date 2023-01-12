@@ -4,24 +4,12 @@ import {Alert, Button, Form, Row, Spinner} from "react-bootstrap";
 import {useAuthContext} from "../contexts/authContext";
 import {backend} from "../services/backend";
 
-function handleLogin(email, password, setSigningIn, setProfile, setError) {
+function handleLogin(email, password, setSigningIn, setNewProfile, setError) {
     if (!email || !password) return;
     setSigningIn(true);
 
-    // fetch("http://localhost:8000/figures/1", {
-    //     method: "GET",
-    //     credentials: 'include',
-    //     headers: {
-    //         Accept: "application/json"
-    //     }
-    // })
-    //     .then((response) => {
-    //         response.json().then((json) => console.log(json));
-    //     })
-
     backend.login(email, password).then((response) => {
-        console.log(response)
-        if (response.profile) setProfile(response.profile);
+        if (response.profile) setNewProfile(response.profile);
         else {
             if (response.error === "invalid-email") setError("Invalid email.");
             else if (response.error === "user-with-email-not-found") setError("No user found with matching email.");
@@ -48,7 +36,7 @@ export function Login() {
     const [signingIn, setSigningIn] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const {profile, setProfile} = useAuthContext();
+    const {profile, setNewProfile} = useAuthContext();
 
     useEffect(() => {
         if (profile) navigate("/profile/" + profile.id);
@@ -64,7 +52,7 @@ export function Login() {
                 e.preventDefault();
                 setError("");
                 setValidated(true);
-                handleLogin(email, password, setSigningIn, setProfile, setError);
+                handleLogin(email, password, setSigningIn, setNewProfile, setError);
             }}>
                 <Form.Group controlId={"title"} className={"mb-3"}>
                     <Form.Label>Email:</Form.Label>

@@ -5,7 +5,7 @@ import {useState} from "react";
 import {Upload} from "./Upload";
 
 export function Header() {
-    const {profile, signout} = useAuthContext();
+    const {profile, logout} = useAuthContext();
     const [activeLink, setActiveLink] = useState("");
     const [showUploadModal, setShowUploadModal] = useState(false);
     const [expanded, setExpanded] = useState(false);
@@ -74,7 +74,7 @@ export function Header() {
                         {
                             profile &&
                             <Nav.Link onClick={() => {
-                                signout();
+                                logout();
                                 setExpanded(false);
                             }}>Logout</Nav.Link>
                         }

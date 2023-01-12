@@ -1,17 +1,8 @@
-export function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let c of ca) {
-        while (c.charAt(0) === ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) === 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
+// export function cookieExists(name) {
+//     return document.cookie.split(';').some(cookie => {
+//         return cookie.trim().startsWith(name + "=");
+//     });
+// }
 
 // export function setCookie(name, value, expiresInDays) {
 //     const d = new Date();

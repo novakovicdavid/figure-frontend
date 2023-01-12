@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {useAuthContext} from "../contexts/authContext";
 import {backend} from "../services/backend";
 
-function handleRegister(username, email, password, setCreatingAccount, setProfile, setError) {
+function handleRegister(username, email, password, setCreatingAccount, setNewProfile, setError) {
     if (!username || !email || !password) return;
     if (!username.match(/^[a-zA-Z-]+$/)) {
         setError("Username is not valid. Only the characters A-Z, a-z and '-' are accepted.");
@@ -14,7 +14,7 @@ function handleRegister(username, email, password, setCreatingAccount, setProfil
     backend.signup(email, password, username)
         .then((result) => {
             console.log(result);
-            if (result.profile) setProfile(result.profile);
+            if (result.profile) setNewProfile(result.profile);
             else setError(result.error);
         });
 }
@@ -25,7 +25,7 @@ export function Register() {
     const [password, setPassword] = useState("");
     const [validated, setValidated] = useState(false);
     const [creatingAccount, setCreatingAccount] = useState(false);
-    const {profile, setProfile} = useAuthContext();
+    const {profile, setNewProfile} = useAuthContext();
     const [error, setError] = useState("");
     const navigate = useNavigate();
     console.log("error:", error)
@@ -43,7 +43,7 @@ export function Register() {
                 e.preventDefault();
                 setError("");
                 setValidated(true);
-                handleRegister(username, email, password, setCreatingAccount, setProfile, setError);
+                handleRegister(username, email, password, setCreatingAccount, setNewProfile, setError);
             }}>
                 <Form.Group controlId={"title"} className={"mb-3"}>
                     <Form.Label>Username:</Form.Label>

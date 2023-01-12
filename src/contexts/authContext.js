@@ -1,34 +1,41 @@
 import {createContext, useContext, useMemo, useState} from "react";
-import {getCookie} from "../utilities/cookies";
+import {cookieExists} from "../utilities/cookies";
 import {backend} from "../services/backend";
+
 
 const AuthContext = createContext(undefined);
 
-
-
 export function AuthProvider(props) {
-    useMemo(() => {
-        const session_id_cookie = getCookie("session_id");
-        if (!session_id_cookie) return;
+    const [profile, setProfile] = useState(undefined);
 
-        backend.load_session().then((result) => {
+    useMemo(() => {
+        // Get profile from storage if user is possibly logged in
+        const profileFromStorage = JSON.parse(localStorage.getItem("profile"));
+        if (profileFromStorage) setProfile(profileFromStorage);
+        // Get profile from session cookie
+        backend.loadSession().then((result) => {
             if (result.profile) {
                 setProfile(result.profile);
-                setSessionId(session_id_cookie);
-            }
-            else {
-                if (result.error === "invalid-session-id") setSessionId(undefined);
+                localStorage.setItem("profile", JSON.stringify(result.profile));
+            } else {
+                if (result.error === "no-session-found" || result.error === "no-session-received") {
+                    // Session cookie is invalid, invalidate cached profile
+                    setProfile(undefined);
+                    localStorage.removeItem("profile");
+                }
             }
         });
-    }, [])
+    }, []);
 
-    const [profile, setProfile] = useState(undefined);
-    const [, setSessionId] = useState(undefined);
+    const setNewProfile = (newProfile) => {
+        localStorage.setItem("profile", JSON.stringify(newProfile));
+        setProfile(newProfile);
+    }
 
-    const signout = () => {
-        backend.invalidate_session().then((result) => {
-            setSessionId(undefined);
+    const logout = () => {
+        backend.invalidateSession().then((result) => {
             setProfile(undefined);
+            localStorage.removeItem("profile");
             if (result.error === "unknown-error") {
                 // TODO show dialog that something went wrong during sign out
             }
@@ -36,7 +43,7 @@ export function AuthProvider(props) {
     }
 
     const api = useMemo(() => ({
-        profile, setProfile, setSessionId, signout
+        profile, setNewProfile, logout
     }), [profile]);
 
     return <AuthContext.Provider value={api}>

@@ -1,4 +1,4 @@
-const domain = "http://localhost:8000";
+const backend_url = "http://localhost:8000";
 /**
  * Object to interact with the backend.
  * Errors are generally returned as an object with an "error" field and string value of what went wrong.
@@ -6,8 +6,8 @@ const domain = "http://localhost:8000";
 export const backend = {
     signup: (email, password, username) => signup(email, password, username),
     login: (email, password) => login(email, password),
-    load_session: () => load_session(),
-    invalidate_session: () => invalidate_session(),
+    loadSession: () => load_session(),
+    invalidateSession: () => invalidate_session(),
 }
 
 /**
@@ -16,7 +16,7 @@ export const backend = {
  */
 async function load_session() {
     try {
-        return await fetch(domain + "/session/load", {
+        return await fetch(backend_url + "/session/load", {
             method: "GET",
             credentials: 'include',
             headers: {
@@ -44,7 +44,7 @@ async function load_session() {
  */
 async function login(email, password) {
     try {
-        return await fetch(domain + "/users/signin", {
+        return await fetch(backend_url + "/users/signin", {
             method: "POST",
             credentials: 'include',
             headers: {
@@ -75,7 +75,7 @@ async function login(email, password) {
  */
 async function invalidate_session() {
     try {
-        return await fetch(domain + "/session/invalidate", {
+        return await fetch(backend_url + "/session/invalidate", {
             method: "POST",
             credentials: 'include',
             headers: {
@@ -100,7 +100,7 @@ async function invalidate_session() {
  */
 async function signup(email, password, username) {
     try {
-        return await fetch(domain + "/users/signup", {
+        return await fetch(backend_url + "/users/signup", {
             method: "POST",
             credentials: 'include',
             headers: {
