@@ -5,43 +5,37 @@ import {LinkContainer} from 'react-router-bootstrap'
 import {Awaited} from "../components/Awaited";
 
 export function FigurePage() {
-    const {urlPromise, docPromise} = useLoaderData();
-    const [imageURL, setImageURL] = useState("");
-    const [figureData, setFigureData] = useState();
+    const {data} = useLoaderData();
+    const [figure, setFigure] = useState();
     const [style, setStyle] = useState({display: "grid"})
     const [imageStyle, setImageStyle] = useState({})
     useEffect(() => {
-        urlPromise.then((imageUrl) => {
-            setImageURL(imageUrl);
-            setStyle({});
-        });
-        docPromise.then((doc) => {
-            setFigureData(doc.data());
-            setStyle({});
-            setImageStyle({aspectRatio: doc.data().sizex + ' / ' + doc.data().sizey})
-        });
-    }, [urlPromise, docPromise])
+        data.then(result => {
+            if (result.figure) {
+                setFigure(result.figure);
+                setStyle({});
+                setImageStyle({aspectRatio: result.figure.width + ' / ' + result.figure.height});
+            }
+        })
+    }, [data]);
 
     return (
         <div style={style}>
                 <Card style={style}>
-                    <Awaited awaiting={urlPromise} style={{placeSelf: "center", gridRow: "1"}}>
+                    <Awaited awaiting={data} style={{placeSelf: "center"}}>
                         {
-                            imageURL &&
-                            <Card.Img variant={"top"} src={imageURL} style={imageStyle}/>
-                        }
-                    </Awaited>
-                    <Awaited awaiting={docPromise} style={{placeSelf: "center", gridRow: "2"}}>
-                        {
-                            figureData &&
-                            <Card.Body>
-                                <Card.Title>{figureData.title}</Card.Title>
-                                <Card.Text>{figureData.description}</Card.Text>
-                                {"By "}
-                                <LinkContainer to={'/profile/' + figureData.user}>
-                                    <Card.Link>{figureData.user}</Card.Link>
-                                </LinkContainer>
-                            </Card.Body>
+                            figure &&
+                            <>
+                                <Card.Img variant={"top"} src={figure.url} style={imageStyle}/>
+                                <Card.Body>
+                                    <Card.Title>{figure.title}</Card.Title>
+                                    <Card.Text>{figure.description}</Card.Text>
+                                    {"By "}
+                                    <LinkContainer to={'/profile/' + figure.profile.id}>
+                                        <Card.Link>{figure.profile.username}</Card.Link>
+                                    </LinkContainer>
+                                </Card.Body>
+                            </>
                         }
                     </Awaited>
                 </Card>

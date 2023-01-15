@@ -8,6 +8,8 @@ export const backend = {
     login: (email, password) => login(email, password),
     loadSession: () => load_session(),
     invalidateSession: () => invalidate_session(),
+
+    get_figure: (figure_id) => get_figure(figure_id),
 }
 
 /**
@@ -23,12 +25,7 @@ async function load_session() {
                 Accept: "application/json",
             }
         }).then(async (response) => {
-            if (response.ok) return await response.json().then((profile) => {
-                return {
-                    profile
-                };
-            });
-            else return await response.json().then((error) => error)
+            return await response.json().then((response) => response);
         });
     }
     catch (e) {
@@ -56,12 +53,7 @@ async function login(email, password) {
                 password,
             })
         }).then(async (response) => {
-            if (response.ok) return await response.json().then((profile) => {
-                return {
-                    profile
-                };
-            });
-            else return await response.json().then((error) => error)
+            return await response.json().then((response) => response);
         })
     }
     catch (e) {
@@ -83,7 +75,7 @@ async function invalidate_session() {
             }
         }).then(async (response) => {
             if (response.ok) return true;
-            else return await response.json().then((error) => error)
+            else return await response.json().then((error) => error);
         });
     }
     catch (e) {
@@ -113,12 +105,29 @@ async function signup(email, password, username) {
                 username: username
             })
         }).then(async (response) => {
-            if (response.ok) return await response.json().then((profile) => {
-                return {
-                    profile
-                }
-            });
-            else return await response.json().then((error) => error)
+            return await response.json().then((response) => response);
+        });
+    }
+    catch (e) {
+        return {error: "network-error"}
+    }
+}
+
+/**
+ * Success: Object with figure field containing figure values (title, description...)
+ * Fail: Object with error field and string value of what went wrong.
+ * @param figure_id The id of the figure to retrieve
+ */
+async function get_figure(figure_id) {
+    try {
+        return await fetch(backend_url + "/figures/" + figure_id, {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+            }
+        }).then(async (response) => {
+            return await response.json().then((response) => response);
         });
     }
     catch (e) {

@@ -10,13 +10,13 @@ import {ErrorPage} from "./pages/ErrorPage";
 import {LoginPage} from "./pages/LoginPage";
 import {FigurePage} from "./pages/FigurePage";
 import {AuthProvider} from "./contexts/authContext";
-import {ref, getDownloadURL} from "firebase/storage";
-import {fbFirestore, fbStorage} from "./services/firebase";
-import {doc, getDoc, getCountFromServer} from "firebase/firestore";
+import {fbFirestore} from "./services/firebase";
+import {getCountFromServer} from "firebase/firestore";
 import {collection, orderBy, limit} from "firebase/firestore";
 import {useMemo} from "react";
 import {fetchFirstFigures} from "./utilities/FigureFetching";
 import {Footer} from "./components/Footer";
+import {backend} from "./services/backend";
 
 
 function App() {
@@ -99,11 +99,8 @@ function App() {
                     path: "/figure/:figureid",
                     element: <FigurePage/>,
                     loader: ({params}) => {
-                        const referenceStorage = ref(fbStorage, 'figures/' + params.figureid);
-                        const referenceDb = doc(fbFirestore, 'figures', params.figureid);
                         return defer({
-                            urlPromise: getDownloadURL(referenceStorage),
-                            docPromise: getDoc(referenceDb)
+                            data: backend.get_figure(params.figureid)
                         });
                     }
                 },
