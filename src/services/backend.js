@@ -1,4 +1,5 @@
 const backend_url = "http://localhost:8000";
+
 /**
  * Object to interact with the backend.
  * Errors are generally returned as an object with an "error" field and string value of what went wrong.
@@ -10,6 +11,9 @@ export const backend = {
     invalidateSession: () => invalidate_session(),
 
     get_figure: (figure_id) => get_figure(figure_id),
+    get_first_browse_figures: (profile_id) => get_first_browse_figures(profile_id),
+    get_figures_after_id: (figure_id, profile_id) => get_figures_after_id(figure_id, profile_id),
+    get_profile: (id) => get_profile(id),
 }
 
 /**
@@ -121,6 +125,66 @@ async function signup(email, password, username) {
 async function get_figure(figure_id) {
     try {
         return await fetch(backend_url + "/figures/" + figure_id, {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+            }
+        }).then(async (response) => {
+            return await response.json().then((response) => response);
+        });
+    }
+    catch (e) {
+        return {error: "network-error"}
+    }
+}
+
+async function get_first_browse_figures(profile_id) {
+    let link = backend_url;
+    if (profile_id) link = link + "/profile/" + profile_id;
+    else link = link + "/figures";
+    link = link + "/browse";
+    try {
+        return await fetch(link, {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+            }
+        }).then(async (response) => {
+            return await response.json().then((response) => response);
+        });
+    }
+    catch (e) {
+        return {error: "network-error"}
+    }
+}
+
+async function get_figures_after_id(figure_id, profile_id) {
+    let link = backend_url;
+    if (profile_id) link = link + "/profile/" + profile_id;
+    else link = link + "/figures";
+    link = link + "/browse/" + figure_id;
+    console.log(link);
+    try {
+        return await fetch(link, {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+            }
+        }).then(async (response) => {
+            return await response.json().then((response) => response);
+        });
+    }
+    catch (e) {
+        return {error: "network-error"}
+    }
+}
+
+async function get_profile(id) {
+    try {
+        return await fetch(backend_url + "/profiles/" + id, {
             method: "GET",
             credentials: 'include',
             headers: {

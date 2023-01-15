@@ -5,8 +5,8 @@ export function Awaited(props) {
     const {awaiting, children, style} = props;
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        awaiting.then(() => setLoading(false));
-    }, [])
+        Promise.all(awaiting).then(() => setLoading(false));
+    }, [awaiting])
     return(
         <>
             {

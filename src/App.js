@@ -30,14 +30,8 @@ function App() {
         </div>
     );
 
-    const limitOfNewItems = 3;
-
-    const collectionRef = useMemo(() =>
-        collection(fbFirestore, 'figures'), [])
     const queryOrder = useMemo(() =>
         orderBy('creation', 'desc'), [])
-    const queryMaxItems = useMemo(() =>
-        limit(limitOfNewItems), [])
 
     const homepageLoader = () => {
         const totalFiguresPromise = getCountFromServer(collection(fbFirestore, "figures")).then((snapshot) => {
@@ -80,19 +74,22 @@ function App() {
                     element: <LoginPage/>
                 },
                 {
-                    path: "/profile/:username",
-                    element: <BrowsePage collectionRef={collectionRef} queryOrder={queryOrder}
-                                         queryMaxItems={queryMaxItems} limitOfNewItems={limitOfNewItems}/>,
+                    path: "/profile/:id",
+                    element: <BrowsePage/>,
                     loader: ({params}) => {
-                        return defer({docs: fetchFirstFigures(queryOrder, queryMaxItems, params.username)})
+                        return defer({
+                            data: backend.get_first_browse_figures(params.id),
+                            profileData: backend.get_profile(params.id)
+                        });
                     }
                 },
                 {
                     path: "/browse",
-                    element: <BrowsePage collectionRef={collectionRef} queryOrder={queryOrder}
-                                         queryMaxItems={queryMaxItems} limitOfNewItems={limitOfNewItems}/>,
+                    element: <BrowsePage/>,
                     loader: () => {
-                        return defer({docs: fetchFirstFigures(queryOrder, queryMaxItems)})
+                        return defer({
+                            data: backend.get_first_browse_figures()
+                        });
                     }
                 },
                 {

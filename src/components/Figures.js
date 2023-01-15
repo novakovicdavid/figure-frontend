@@ -27,8 +27,8 @@ export function Figures(props) {
         <Container>
             {
                 figures.map((figure) =>
-                    <Figure id={figure.id} url={figure.url} title={figure.data().title} width={figure.data().sizex}
-                            height={figure.data().sizey} user={figure.data().user} isProfilePage={isProfilePage} key={figure.id}/>
+                    <Figure id={figure.id} url={figure.url} title={figure.title} width={figure.width}
+                            height={figure.height} user={figure.profile.username} isProfilePage={isProfilePage} key={figure.id}/>
                 )
             }
         </Container>

@@ -22,7 +22,7 @@ export function FigurePage() {
     return (
         <div style={style}>
                 <Card style={style}>
-                    <Awaited awaiting={data} style={{placeSelf: "center"}}>
+                    <Awaited awaiting={[data]} style={{placeSelf: "center"}}>
                         {
                             figure &&
                             <>

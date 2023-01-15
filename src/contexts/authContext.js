@@ -1,5 +1,4 @@
 import {createContext, useContext, useMemo, useState} from "react";
-import {cookieExists} from "../utilities/cookies";
 import {backend} from "../services/backend";
 
 
