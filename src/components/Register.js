@@ -13,7 +13,6 @@ function handleRegister(username, email, password, setCreatingAccount, setNewPro
     // setCreatingAccount(true);
     backend.signup(email, password, username)
         .then((result) => {
-            console.log(result);
             if (result.profile) setNewProfile(result.profile);
             else setError(result.error);
         });
@@ -28,7 +27,6 @@ export function Register() {
     const {profile, setNewProfile} = useAuthContext();
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    console.log("error:", error)
     useEffect(() => {
         if (profile) navigate("/profile/" + profile.id);
     }, [navigate, profile]);

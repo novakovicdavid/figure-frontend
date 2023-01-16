@@ -12,9 +12,10 @@ function getNextFiguresAndAppend(figures, setFigures, setCountOfNewFigures, last
     if (profile) promise = backend.get_figures_after_id(lastFigureId, profile.id);
     else promise = backend.get_figures_after_id(lastFigureId);
     promise.then((newFigures) => {
-            setFigures([...figures, ...newFigures.figures]);
-            setCountOfNewFigures(newFigures.figures.length);
-        })
+        if (newFigures.error) return;
+        setFigures([...figures, ...newFigures.figures]);
+        setCountOfNewFigures(newFigures.figures.length);
+    })
 }
 
 export function BrowsePage() {
@@ -37,6 +38,7 @@ export function BrowsePage() {
 
     useEffect(() => {
         data.then(data => {
+            if (!data.error) return;
             setFigures(data.figures);
             setCountOfNewFigures(data.figures.length);
         });
@@ -45,7 +47,6 @@ export function BrowsePage() {
     useEffect(() => {
         if (!profileData) return;
         profileData.then(fetchedProfile => {
-            console.log(fetchedProfile);
             setProfile(fetchedProfile.profile)
         });
     }, [profileData]);

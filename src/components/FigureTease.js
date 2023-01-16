@@ -3,7 +3,6 @@ import {LinkContainer} from 'react-router-bootstrap'
 
 export function FigureTease(props) {
     const {figures, style} = props;
-    console.log(figures)
     return (
         <>
             {
