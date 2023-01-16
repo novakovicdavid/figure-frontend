@@ -14,6 +14,7 @@ export const backend = {
     get_first_browse_figures: (profile_id) => get_first_browse_figures(profile_id),
     get_figures_after_id: (figure_id, profile_id) => get_figures_after_id(figure_id, profile_id),
     get_profile: (id) => get_profile(id),
+    upload_figure: (title, description, file) => upload_figure(title, description, file),
 }
 
 /**
@@ -139,6 +140,11 @@ async function get_figure(figure_id) {
     }
 }
 
+/**
+ * Success: Array of the latest Figures with their values
+ * Fail: Object with error field and string value of what went wrong.
+ * @param profile_id (Optional) The id of the profile you want to get figures of
+ */
 async function get_first_browse_figures(profile_id) {
     let link = backend_url;
     if (profile_id) link = link + "/profile/" + profile_id;
@@ -160,12 +166,17 @@ async function get_first_browse_figures(profile_id) {
     }
 }
 
+/**
+ Success: Array of Figures after the specified figure_id with their values
+ Fail: Object with error field and string value of what went wrong.
+ @param figure_id The id of the figure after which you want to get figures
+ @param profile_id (Optional) The id of the profile you want to get figures of
+ */
 async function get_figures_after_id(figure_id, profile_id) {
     let link = backend_url;
     if (profile_id) link = link + "/profile/" + profile_id;
     else link = link + "/figures";
     link = link + "/browse/" + figure_id;
-    console.log(link);
     try {
         return await fetch(link, {
             method: "GET",
@@ -182,6 +193,11 @@ async function get_figures_after_id(figure_id, profile_id) {
     }
 }
 
+/**
+ * Success: Object with profile field containing profile values (username, display_name...)
+ * Fail: Object with error field and string value of what went wrong.
+ * @param id Id of the profile
+ */
 async function get_profile(id) {
     try {
         return await fetch(backend_url + "/profiles/" + id, {
@@ -190,6 +206,35 @@ async function get_profile(id) {
             headers: {
                 Accept: "application/json",
             }
+        }).then(async (response) => {
+            return await response.json().then((response) => response);
+        });
+    }
+    catch (e) {
+        return {error: "network-error"}
+    }
+}
+
+/**
+ * Success: Object with figure_id field containing id of newly created Figure
+ * Fail: Object with error field and string value of what went wrong.
+ * @param title The title of the new Figure
+ * @param description The description of the new Figure
+ * @param file The image to upload for the Figure
+ */
+async function upload_figure(title, description, file) {
+    let formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('file', file);
+    try {
+        return await fetch(backend_url + "/figures/upload", {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+            },
+            body: formData
         }).then(async (response) => {
             return await response.json().then((response) => response);
         });

@@ -1,46 +1,15 @@
 import Form from 'react-bootstrap/Form';
 import {Button, Modal, Spinner} from "react-bootstrap";
 import {useEffect, useState} from "react";
-import {ref, uploadBytes} from "firebase/storage";
-import {fbFirestore, fbStorage} from "../services/firebase";
-import {v4 as uuidv4} from 'uuid';
-import {doc, setDoc} from "firebase/firestore";
-import {serverTimestamp} from "firebase/firestore"
-import {useAuthContext} from "../contexts/authContext";
 import {useNavigate} from "react-router-dom";
+import {backend} from "../services/backend";
 
-function handleUpload(event, title, description, file, username, useruid, navigate, setUploading, setUidOfCompletedUpload) {
+function handleUpload(event, title, description, file, navigate, setUploading, setFigureId) {
     event.preventDefault();
-    const uuid = uuidv4();
     if (!file || !title || !description) return;
     setUploading(true);
-    const metadata = {
-        customMetadata: {
-            'user': username,
-            'useruid': useruid
-        }
-    }
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (e) => {
-        const image = new Image();
-        image.src = e.target.result;
-        image.onload = () => {
-            const storageRef = ref(fbStorage, 'figures/' + uuid);
-            uploadBytes(storageRef, file, metadata).then(() => {
-                setDoc(doc(fbFirestore, "figures", uuid), {
-                    creation: serverTimestamp(),
-                    title: title,
-                    description: description,
-                    sizex: image.width,
-                    sizey: image.height,
-                    user: username
-                }).then(() => {
-                    setUidOfCompletedUpload(uuid);
-                })
-            });
-        }
-    }
+    backend.upload_figure(title, description, file)
+        .then((response) => setFigureId(response.figure_id));
 }
 
 export function Upload(props) {
@@ -49,14 +18,13 @@ export function Upload(props) {
     const [title, setTitle] = useState(null);
     const [description, setDescription] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const [figureId, setFigureId] = useState(false);
     const [validated, setValidated] = useState(false);
-    const [uidOfCompletedUpload, setUidOfCompletedUpload] = useState();
-    const {username, user} = useAuthContext();
     const navigate = useNavigate();
     useEffect(() => {
-        if (uidOfCompletedUpload) {
-            navigate("/figure/" + uidOfCompletedUpload);
-            setUidOfCompletedUpload(undefined);
+        if (figureId) {
+            navigate("/figure/" + figureId);
+            setFigureId(undefined);
             setShow(false);
             setFile(undefined);
             setTitle(undefined);
@@ -64,7 +32,8 @@ export function Upload(props) {
             setUploading(false);
             setValidated(false);
         }
-    }, [uidOfCompletedUpload]);
+    }, [figureId, navigate]);
+
     return (
         <Modal show={show} onHide={() => {
             setShow(false);
@@ -79,7 +48,7 @@ export function Upload(props) {
             </Modal.Header>
             <Modal.Body>
                 <Form noValidate validated={validated} onSubmit={(e) => {
-                    handleUpload(e, title, description, file, username, user.uid, navigate, setUploading, setUidOfCompletedUpload);
+                    handleUpload(e, title, description, file, navigate, setUploading, setFigureId);
                     setValidated(true);
                 }}>
                     <Form.Group controlId="formFile" className="mb-3">
