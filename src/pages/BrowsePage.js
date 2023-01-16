@@ -38,7 +38,7 @@ export function BrowsePage() {
 
     useEffect(() => {
         data.then(data => {
-            if (!data.error) return;
+            if (data.error) return;
             setFigures(data.figures);
             setCountOfNewFigures(data.figures.length);
         });
