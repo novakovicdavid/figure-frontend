@@ -1,20 +1,21 @@
 import {useLoaderData, useParams} from "react-router-dom";
 import {useEffect, useMemo, useState} from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import {Figures} from "../components/Figures";
 import {Awaited} from "../components/Awaited";
 import '../styling/no-scroll.css'
 import {Spinner} from "react-bootstrap";
 import {backend} from "../services/backend";
+import {useInView} from "react-intersection-observer";
 
-function getNextFiguresAndAppend(figures, setFigures, setCountOfNewFigures, lastFigureId, profile) {
+function getNextFiguresAndAppend(figures, setFigures, setReachedEnd, lastFigureId, profile, setFetching) {
     let promise;
     if (profile) promise = backend.get_figures_after_id(lastFigureId, profile.id);
     else promise = backend.get_figures_after_id(lastFigureId);
     promise.then((newFigures) => {
         if (newFigures.error) return;
         setFigures([...figures, ...newFigures.figures]);
-        setCountOfNewFigures(newFigures.figures.length);
+        setFetching(false);
+        if (newFigures.figures.length < 3) setReachedEnd(true);
     })
 }
 
@@ -23,8 +24,9 @@ export function BrowsePage() {
     const {data, profileData} = useLoaderData();
     const [figures, setFigures] = useState([]);
     const [profile, setProfile] = useState();
-    const [countOfNewFigures, setCountOfNewFigures] = useState(0);
-    const [infinityScrollStyle, setInfinityScrollStyle] = useState({
+    const [fetching, setFetching] = useState(false);
+    const [reachedEnd, setReachedEnd] = useState(false);
+    const [infinityStyle, setInfinityStyle] = useState({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -32,24 +34,38 @@ export function BrowsePage() {
         transition: "opacity 0.5s"
     });
 
-    useMemo(() => {
-        if (!profile_id) setProfile(undefined);
-    }, [profile_id]);
+    const {ref, inView} = useInView({
+        threshold: 0.2,
+    });
 
     useEffect(() => {
-        data.then(data => {
-            if (data.error) return;
-            setFigures(data.figures);
-            setCountOfNewFigures(data.figures.length);
-        });
-    }, [data]);
+        if (!profile_id && profile) setProfile(undefined);
+    }, [profile, profile_id]);
 
     useEffect(() => {
-        if (!profileData) return;
-        profileData.then(fetchedProfile => {
-            setProfile(fetchedProfile.profile)
-        });
-    }, [profileData]);
+        if (figures.length === 0 && !profile) {
+            Promise.all([data, profileData])
+                .then(([data, profileData]) => {
+                    if (data.figures) {
+                        setFigures(data.figures);
+                        if (data.figures.length > 0) requestAnimationFrame(() => {
+                            setInfinityStyle({
+                                ...infinityStyle,
+                                opacity: 1
+                            });
+                        });
+                    }
+                    if (profileData && profileData.profile) setProfile(profileData.profile);
+                })
+        }
+    }, [data, figures.length, profile, profileData]);
+
+    useEffect(() => {
+        if (inView && !fetching && !reachedEnd) {
+            setFetching(true);
+            getNextFiguresAndAppend(figures, setFigures, setReachedEnd, figures[figures.length - 1].id, profile, setFetching);
+        }
+    }, [inView]);
 
     const waitFor = useMemo(() => {
         let promises = [data];
@@ -57,19 +73,7 @@ export function BrowsePage() {
         return promises;
     }, [data, profileData]);
 
-    useEffect(() => {
-        if (figures.length > 0) {
-            requestAnimationFrame(() => {
-                setInfinityScrollStyle({
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    opacity: 1,
-                    transition: "opacity 0.5s"
-                });
-            });
-        }
-    }, [figures]);
+    console.log(fetching);
 
     return (
         <div id={"scroller"} className={"overflow-scroll"}
@@ -86,27 +90,19 @@ export function BrowsePage() {
                 }}>{profile.username}</div>
             }
             <Awaited awaiting={waitFor} style={{placeSelf: "center", gridRow: "1 / -1", gridColumn: "1 / 2"}}>
-                {
-                    <InfiniteScroll style={infinityScrollStyle}
-                                    dataLength={figures.length}
-                                    next={() => {
-                                        getNextFiguresAndAppend(figures, setFigures, setCountOfNewFigures, figures[figures.length - 1].id, profile);
-                                    }}
-                                    hasMore={countOfNewFigures === 3}
-                                    loader={<div style={{height: '2.5rem'}}><Spinner animation={"border"}/></div>}
-                                    endMessage={
-                                        <p style={{textAlign: 'center'}}>
-                                            <b>Yay! You have seen it all</b>
-                                        </p>
-                                    }
-                                    scrollableTarget={"scroller"}
-                                    scrollThreshold={0.6}
-                    >
-                        <div style={{width: "100%", maxWidth: "720px"}}>
-                            <Figures figures={figures} isProfilePage={!!profile_id}/>
-                        </div>
-                    </InfiniteScroll>
-                }
+                <div style={infinityStyle}>
+                    <div style={{width: "100%", maxWidth: "720px"}}>
+                        <Figures figures={figures} isProfilePage={!!profile_id} refLastFigure={ref}/>
+                    </div>
+                    {
+                        fetching &&
+                        <Spinner animation={"border"}/>
+                    }
+                    {
+                        reachedEnd &&
+                        <p>The end.</p>
+                    }
+                </div>
             </Awaited>
         </div>
     )
