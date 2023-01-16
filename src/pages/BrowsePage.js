@@ -91,7 +91,7 @@ export function BrowsePage() {
                                     next={() => {
                                         getNextFiguresAndAppend(figures, setFigures, setCountOfNewFigures, figures[figures.length - 1].id, profile);
                                     }}
-                                    hasMore={countOfNewFigures === 1}
+                                    hasMore={countOfNewFigures === 3}
                                     loader={<div style={{height: '2.5rem'}}><Spinner animation={"border"}/></div>}
                                     endMessage={
                                         <p style={{textAlign: 'center'}}>
