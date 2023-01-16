@@ -1,26 +1,26 @@
 import {Button, Col, Container, Image, Row} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 import {useLoaderData} from "react-router-dom";
-import {useEffect, useLayoutEffect, useMemo, useState} from "react";
+import {useEffect, useLayoutEffect, useState} from "react";
 import {FigureTease} from "../components/FigureTease";
 import {useInView} from "react-intersection-observer";
 
 export function HomePage() {
-    const {totalFiguresPromise, totalUsersPromise, latestFiguresPromise} = useLoaderData();
+    const {totalFiguresCountPromise, totalProfilesCountPromise, latestFiguresPromise} = useLoaderData();
     const [totalFigures, setTotalFigures] = useState("...");
     const [totalUsers, setTotalUsers] = useState("...")
     const [latestFigures, setLatestFigures] = useState();
-    useMemo(() => {
-        totalFiguresPromise.then((total) => {
-            setTotalFigures(total);
+    useEffect(() => {
+        totalProfilesCountPromise.then((total) => {
+            if (!total.error) setTotalUsers(total)
         });
-        totalUsersPromise.then((total) => {
-            setTotalUsers(total);
+        totalFiguresCountPromise.then((total) => {
+            if (!total.error) setTotalFigures(total)
         });
-        latestFiguresPromise.then((urls) => {
-            setLatestFigures(urls);
+        latestFiguresPromise.then((figures) => {
+            if (!figures.error) setLatestFigures(figures.figures);
         });
-    }, []);
+    }, [latestFiguresPromise, totalFiguresCountPromise, totalProfilesCountPromise]);
 
     // Fade in Landing part
     const [landingStyle, setLandingStyle] = useState({visibility: 'hidden', opacity: 0});

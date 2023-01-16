@@ -1,4 +1,3 @@
-import 'firebaseui/dist/firebaseui.css'
 import {Register} from "../components/Register";
 import {useAuthContext} from "../contexts/authContext";
 import {useNavigate} from "react-router-dom";
@@ -11,7 +10,7 @@ export function RegisterPage() {
         if (user) {
             navigate('/')
         }
-    }, [user])
+    }, [navigate, user])
     return(
         <Register/>
     )

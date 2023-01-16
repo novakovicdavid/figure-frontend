@@ -15,6 +15,10 @@ export const backend = {
     get_figures_after_id: (figure_id, profile_id) => get_figures_after_id(figure_id, profile_id),
     get_profile: (id) => get_profile(id),
     upload_figure: (title, description, file) => upload_figure(title, description, file),
+
+    get_total_profiles_count: () => get_total_profiles_count(),
+    get_total_figures_count: () => get_total_figures_count(),
+    get_landing_page_figures: () => get_landing_page_figures()
 }
 
 /**
@@ -237,6 +241,57 @@ async function upload_figure(title, description, file) {
             body: formData
         }).then(async (response) => {
             return await response.json().then((response) => response);
+        });
+    }
+    catch (e) {
+        return {error: "network-error"}
+    }
+}
+
+async function get_total_profiles_count() {
+    try {
+        return await fetch(backend_url + "/profiles/count", {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+            },
+        }).then(async (response) => {
+            return await response.text();
+        });
+    }
+    catch (e) {
+        return {error: "network-error"}
+    }
+}
+
+async function get_total_figures_count() {
+    try {
+        return await fetch(backend_url + "/figures/count", {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+            },
+        }).then(async (response) => {
+            return await response.text();
+        });
+    }
+    catch (e) {
+        return {error: "network-error"}
+    }
+}
+
+async function get_landing_page_figures() {
+    try {
+        return await fetch(backend_url + "/figures/landing-page", {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+            },
+        }).then(async (response) => {
+            return await response.json();
         });
     }
     catch (e) {

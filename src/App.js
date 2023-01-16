@@ -10,11 +10,6 @@ import {ErrorPage} from "./pages/ErrorPage";
 import {LoginPage} from "./pages/LoginPage";
 import {FigurePage} from "./pages/FigurePage";
 import {AuthProvider} from "./contexts/authContext";
-import {fbFirestore} from "./services/firebase";
-import {getCountFromServer} from "firebase/firestore";
-import {collection, orderBy, limit} from "firebase/firestore";
-import {useMemo} from "react";
-import {fetchFirstFigures} from "./utilities/FigureFetching";
 import {Footer} from "./components/Footer";
 import {backend} from "./services/backend";
 
@@ -30,23 +25,14 @@ function App() {
         </div>
     );
 
-    const queryOrder = useMemo(() =>
-        orderBy('creation', 'desc'), [])
-
     const homepageLoader = () => {
-        const totalFiguresPromise = getCountFromServer(collection(fbFirestore, "figures")).then((snapshot) => {
-            return snapshot.data().count;
-        });
-        const totalUsersPromise = getCountFromServer(collection(fbFirestore, "users")).then((snapshot) => {
-            return snapshot.data().count;
-        });
-        const latestFiguresPromise = fetchFirstFigures(queryOrder, limit(9)).then((docs) => {
-            return(docs);
-        });
+        const totalFiguresCountPromise = backend.get_total_figures_count();
+        const totalProfilesCountPromise = backend.get_total_profiles_count();
+        const latestFiguresPromise = backend.get_landing_page_figures();
 
         return defer({
-            totalFiguresPromise,
-            totalUsersPromise,
+            totalFiguresCountPromise,
+            totalProfilesCountPromise,
             latestFiguresPromise
         });
     }
