@@ -31,7 +31,7 @@ export function BrowsePage() {
         flexDirection: "column",
         alignItems: "center",
         opacity: 0,
-        transition: "opacity 0.5s"
+        transition: "opacity 0.3s"
     });
 
     const {ref, inView} = useInView({
@@ -39,16 +39,12 @@ export function BrowsePage() {
     });
 
     useEffect(() => {
-        if (!profile_id && profile) setProfile(undefined);
-    }, [profile, profile_id]);
-
-    useEffect(() => {
         if (figures.length === 0 && !profile) {
             Promise.all([data, profileData])
                 .then(([data, profileData]) => {
-                    if (data.figures) {
+                    if (data.figures && data.figures.length > 0) {
                         setFigures(data.figures);
-                        if (data.figures.length > 0) requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
                             setInfinityStyle({
                                 ...infinityStyle,
                                 opacity: 1
@@ -58,7 +54,7 @@ export function BrowsePage() {
                     if (profileData && profileData.profile) setProfile(profileData.profile);
                 })
         }
-    }, [data, figures.length, profile, profileData]);
+    }, [data, figures, profile, profileData, profile_id]);
 
     useEffect(() => {
         if (inView && !fetching && !reachedEnd) {
@@ -72,8 +68,6 @@ export function BrowsePage() {
         if (profileData) promises.push(profileData);
         return promises;
     }, [data, profileData]);
-
-    console.log(fetching);
 
     return (
         <div id={"scroller"} className={"overflow-scroll"}

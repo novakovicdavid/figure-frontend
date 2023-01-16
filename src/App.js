@@ -61,7 +61,7 @@ function App() {
                 },
                 {
                     path: "/profile/:id",
-                    element: <BrowsePage/>,
+                    element: <BrowsePage key={Math.random()}/>,
                     loader: ({params}) => {
                         return defer({
                             data: backend.get_first_browse_figures(params.id),
@@ -71,7 +71,7 @@ function App() {
                 },
                 {
                     path: "/browse",
-                    element: <BrowsePage/>,
+                    element: <BrowsePage key={Math.random()}/>,
                     loader: () => {
                         return defer({
                             data: backend.get_first_browse_figures()
