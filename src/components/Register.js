@@ -10,11 +10,12 @@ function handleRegister(username, email, password, setCreatingAccount, setNewPro
         setError("Username is not valid. Only the characters A-Z, a-z and '-' are accepted.");
         return;
     }
-    // setCreatingAccount(true);
+    setCreatingAccount(true);
     backend.signup(email, password, username)
         .then((result) => {
             if (result.profile) setNewProfile(result.profile);
             else setError(result.error);
+            setCreatingAccount(false);
         });
 }
 
