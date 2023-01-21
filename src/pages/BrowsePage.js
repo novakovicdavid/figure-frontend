@@ -21,7 +21,7 @@ function getNextFiguresAndAppend(figures, setFigures, setReachedEnd, lastFigureI
 }
 
 export function BrowsePage() {
-    const profile_id = useParams().id;
+    const profile_id = parseInt(useParams().id);
     const {data, profileData} = useLoaderData();
     const [figures, setFigures] = useState([]);
     const [profile, setProfile] = useState();
@@ -40,9 +40,19 @@ export function BrowsePage() {
     });
 
     useEffect(() => {
-        if (figures.length === 0 && !profile) {
+        // Clear state when going from one profile to another
+        if (profile && (profile.id !== profile_id)) {
+            setProfile(undefined);
+            setFigures([]);
+            setFetching(false);
+            setReachedEnd(false);
+        }
+
+        // Seed page with data
+        else if (figures.length === 0 && !profile) {
             Promise.all([data, profileData])
                 .then(([data, profileData]) => {
+                    if (profileData && profileData.profile) setProfile(profileData.profile);
                     if (data.figures) {
                         requestAnimationFrame(() => {
                             setInfinityStyle({
@@ -55,11 +65,11 @@ export function BrowsePage() {
                             setReachedEnd(true);
                         }
                     }
-                    if (profileData && profileData.profile) setProfile(profileData.profile);
                 })
         }
     }, [data, figures, profile, profileData, profile_id]);
 
+    // Get new figures when last figure in list is visible
     useEffect(() => {
         if (inView && !fetching && !reachedEnd) {
             setFetching(true);
