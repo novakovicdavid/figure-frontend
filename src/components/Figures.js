@@ -1,38 +1,46 @@
-import {Card, Col, Container, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
 function Figure(props) {
-    const {id, url, title, width, height, user, isProfilePage, refLastFigure} = props;
+    const {id, url, title, width, height, profile, isProfilePage, refLastFigure} = props;
+    let style = {
+        padding: "1em",
+    };
+    if (!refLastFigure) style = {
+        ...style,
+        borderBottom: "1px solid rgb(239, 243, 244)"
+    }
     return (
-        <Row ref={refLastFigure}>
-            <Col>
-                <Card className={"mb-4"}>
-                    <Link to={'/figure/' + id}>
-                        <Card.Img variant={"top"} src={url} style={{aspectRatio: width + ' / ' + height}}/>
-                        <Card.Header as={"h5"}>{title}</Card.Header>
+        <div ref={refLastFigure} style={style}>
+            {
+                !isProfilePage &&
+                <>
+                    {"By "}
+                    <Link to={'/profile/' + profile.id}>
+                        <span>{profile.username}</span>
                     </Link>
-                    {
-                        !isProfilePage &&
-                        <p className={"ms-3 mt-1 mb-1"}>{user}</p>
-                    }
-                </Card>
-            </Col>
-        </Row>
+                </>
+
+            }
+            <Link to={'/figure/' + id}>
+                <img src={url} style={{aspectRatio: width + ' / ' + height, width: "100%"}}/>
+                <h5 style={{marginBottom: 0}}>{title}</h5>
+            </Link>
+        </div>
     )
 }
 
 export function Figures(props) {
     const {figures, isProfilePage, refLastFigure} = props;
     return (
-        <Container>
+        <>
             {
                 figures.map((figure, index) =>
                     <Figure id={figure.id} url={figure.url} title={figure.title} width={figure.width}
-                            height={figure.height} user={figure.profile.username}
+                            height={figure.height} profile={figure.profile}
                             isProfilePage={isProfilePage} key={figure.id}
                             refLastFigure={(index === figures.length - 1) ? refLastFigure : undefined}/>
                 )
             }
-        </Container>
+        </>
     )
 }
