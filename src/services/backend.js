@@ -18,7 +18,9 @@ export const backend = {
 
     get_total_profiles_count: () => get_total_profiles_count(),
     get_total_figures_count: () => get_total_figures_count(),
-    get_landing_page_figures: () => get_landing_page_figures()
+    get_landing_page_figures: () => get_landing_page_figures(),
+
+    get_total_figures_by_profile: (id) => get_total_figures_by_profile(id)
 }
 
 /**
@@ -292,6 +294,23 @@ async function get_landing_page_figures() {
             },
         }).then(async (response) => {
             return await response.json();
+        });
+    }
+    catch (e) {
+        return {error: "network-error"}
+    }
+}
+
+async function get_total_figures_by_profile(id) {
+    try {
+        return await fetch(backend_url + "/profile/" + id + "/total_figures", {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+            },
+        }).then(async (response) => {
+            return await response.text();
         });
     }
     catch (e) {

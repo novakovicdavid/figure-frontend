@@ -63,9 +63,17 @@ function App() {
                     path: "/profile/:id",
                     element: <BrowsePage key={Math.random()}/>,
                     loader: ({params}) => {
+                        const total = backend.get_total_figures_by_profile(params.id);
                         return defer({
                             data: backend.get_first_browse_figures(params.id),
                             profileData: backend.get_profile(params.id)
+                                // Add total figures submitted by user to profile object
+                                .then((profile) => {
+                                    return total.then((total) => {
+                                        if (profile.profile) profile.profile.total_figures = total;
+                                        return profile;
+                                    })
+                                })
                         });
                     }
                 },

@@ -1,10 +1,14 @@
 import {Link} from "react-router-dom";
 
 function Figure(props) {
-    const {id, url, title, width, height, profile, isProfilePage, refLastFigure} = props;
+    const {id, url, title, width, height, profile, isProfilePage, refLastFigure, index} = props;
     let style = {
         padding: "1em",
     };
+    // if (index === 0 && isProfilePage) style = {
+    //     ...style,
+    //     paddingTop: "0"
+    // }
     if (!refLastFigure) style = {
         ...style,
         borderBottom: "1px solid rgb(239, 243, 244)"
@@ -38,7 +42,8 @@ export function Figures(props) {
                     <Figure id={figure.id} url={figure.url} title={figure.title} width={figure.width}
                             height={figure.height} profile={figure.profile}
                             isProfilePage={isProfilePage} key={figure.id}
-                            refLastFigure={(index === figures.length - 1) ? refLastFigure : undefined}/>
+                            refLastFigure={(index === figures.length - 1) ? refLastFigure : undefined}
+                            index={index}/>
                 )
             }
         </>
