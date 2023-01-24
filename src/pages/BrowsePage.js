@@ -7,6 +7,7 @@ import {Spinner} from "react-bootstrap";
 import {backend} from "../services/backend";
 import {useInView} from "react-intersection-observer";
 import {ProfileHeader} from "../components/ProfileHeader";
+import {Profile} from "../components/Profile";
 
 function getNextFiguresAndAppend(figures, setFigures, setReachedEnd, lastFigureId, profile, setFetching) {
     let promise;
@@ -52,7 +53,10 @@ export function BrowsePage() {
         else if (figures.length === 0 && !profile) {
             Promise.all([data, profileData])
                 .then(([data, profileData]) => {
-                    if (profileData && profileData.profile) setProfile(profileData.profile);
+                    if (profileData && profileData.profile) {
+                        console.log(profileData.profile);
+                        setProfile(profileData.profile);
+                    }
                     if (data.figures) {
                         requestAnimationFrame(() => {
                             setInfinityStyle({
@@ -89,13 +93,17 @@ export function BrowsePage() {
             <Awaited awaiting={waitFor} style={{placeSelf: "center", gridRow: "1 / -1", gridColumn: "1 / 2"}}>
                 <div style={infinityStyle}>
                     <div style={{
-                        width: "100%", height: "100%", maxWidth: "720px",
+                        width: "100%", height: "100%", maxWidth: "37rem",
                         border: "1px solid rgb(239, 243, 244)",
                         borderTop: 0,
                         borderBottom: 0}}>
                         {
                             profile &&
                             <ProfileHeader profile={profile}/>
+                        }
+                        {
+                            profile &&
+                            <Profile profile={profile}/>
                         }
                         {
                             figures &&

@@ -4,8 +4,7 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {backend} from "../services/backend";
 
-function handleUpload(event, title, description, file, navigate, setUploading, setFigureId) {
-    event.preventDefault();
+function handleUpload(title, description, file, navigate, setUploading, setFigureId) {
     if (!file || !title || !description) return;
     setUploading(true);
     backend.upload_figure(title, description, file)
@@ -48,7 +47,8 @@ export function Upload(props) {
             </Modal.Header>
             <Modal.Body>
                 <Form noValidate validated={validated} onSubmit={(e) => {
-                    handleUpload(e, title, description, file, navigate, setUploading, setFigureId);
+                    e.preventDefault();
+                    handleUpload(title, description, file, navigate, setUploading, setFigureId);
                     setValidated(true);
                 }}>
                     <Form.Group controlId="formFile" className="mb-3">

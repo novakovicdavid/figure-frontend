@@ -15,6 +15,7 @@ export const backend = {
     get_figures_after_id: (figure_id, profile_id) => get_figures_after_id(figure_id, profile_id),
     get_profile: (id) => get_profile(id),
     upload_figure: (title, description, file) => upload_figure(title, description, file),
+    updateProfile: (displayName, bio, banner, profilePicture) => updateProfile(displayName, bio, banner, profilePicture),
 
     get_total_profiles_count: () => get_total_profiles_count(),
     get_total_figures_count: () => get_total_figures_count(),
@@ -311,6 +312,32 @@ async function get_total_figures_by_profile(id) {
             },
         }).then(async (response) => {
             return await response.text();
+        });
+    }
+    catch (e) {
+        return {error: "network-error"}
+    }
+}
+
+async function updateProfile(displayName, bio, banner, profilePicture) {
+    let formData = new FormData();
+    formData.append('display_name', displayName);
+    formData.append('bio', bio);
+    formData.append('banner', banner);
+    formData.append('profile_picture', profilePicture);
+    try {
+        return await fetch(backend_url + "/profile/update", {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+            },
+            body: formData
+        }).then(async (response) => {
+            try {
+                return await response.json().then((response) => response);
+            }
+            catch (e) { return true }
         });
     }
     catch (e) {
