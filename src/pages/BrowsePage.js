@@ -54,7 +54,6 @@ export function BrowsePage() {
             Promise.all([data, profileData])
                 .then(([data, profileData]) => {
                     if (profileData && profileData.profile) {
-                        console.log(profileData.profile);
                         setProfile(profileData.profile);
                     }
                     if (data.figures) {
