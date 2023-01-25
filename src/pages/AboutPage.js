@@ -22,12 +22,12 @@ export function AboutPage() {
         setClassName("");
     }, []);
 
-    // const skip = localStorage.getItem("about-page-seen-before");
-    const skip = false;
+    const skip = localStorage.getItem("about-page-seen-before");
+    // const skip = false;
 
     return (
         <div id={"about-page"} className={className} style={{padding: "0 1rem"}}>
-            <div style={{maxWidth: "45rem", marginLeft: "auto", marginRight: "auto", marginTop: "2rem"}}>
+            <div style={{maxWidth: "45rem", marginLeft: "auto", marginRight: "auto", marginTop: "4rem"}}>
                 {
                     !skip &&
                     <Typewriter
