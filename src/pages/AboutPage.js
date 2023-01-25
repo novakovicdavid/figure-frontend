@@ -97,7 +97,7 @@ export function AboutPage() {
                                     '<br/>' +
                                     'Web framework: <code>Axum</code>' +
                                     '<br/>' +
-                                    'Database: PostgresQL using <code>sqlx</code>' +
+                                    'Database: PostgreSQL using <code>sqlx</code>' +
                                     '<br/>' +
                                     'Session Store: Redis using <code>redis</code>' +
                                     '<br/>' +
@@ -167,7 +167,7 @@ export function AboutPage() {
                             <br/>
                             Web framework: <code>Axum</code>
                             <br/>
-                            Database: PostgresQL using <code>sqlx</code>
+                            Database: PostgreSQL using <code>sqlx</code>
                             <br/>
                             Session Store: Redis using <code>redis</code>
                             <br/>
