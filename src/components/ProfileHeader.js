@@ -10,7 +10,7 @@ export function ProfileHeader(props) {
             backdropFilter: "blur(10px)",
             backgroundColor: "rgba(255, 255, 255, 0.85)"
         }}>
-            <span style={{paddingRight: "2.5rem", fontSize: "2rem"}} onClick={() => {
+            <span style={{paddingRight: "2.5rem", fontSize: "2rem", fontFamily: "Cantarell"}} onClick={() => {
                 const scroller = document.getElementById("scroller");
                 scroller.scrollTop = 0;
             }}>&#8593;</span>

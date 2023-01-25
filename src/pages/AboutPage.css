@@ -1,0 +1,63 @@
+.about-page {
+    padding: 3rem;
+}
+
+#about-page.light {
+    background-color: white;
+    transition-property: color, background-color;
+    transition-duration: 1s;
+}
+
+#about-page, .about-darken a, .about-darken small, .about-darken button {
+    color: #18f018 !important;
+    transition-property: color;
+}
+
+#about-page, .about-darken, .about-darken button {
+    border-color: unset;
+    background-color: black;
+    transition-property: color, background-color, border-top-color, border-right-color, border-bottom-color, border-left-color;
+}
+
+#about-page, .about-darken, .about-darken a, .about-darken small, .about-darken button {
+    transition-duration: 1s !important;
+    transition-timing-function: unset !important;
+    transition-delay: unset !important;
+}
+
+#about-page p.d-inline {
+    position: relative;
+    top: 1rem
+}
+
+#about-page h2.d-inline {
+    position: relative;
+    top: .5rem
+}
+
+.cursor-h2 {
+    position: relative;
+    top: .5rem
+}
+
+.cursor-p {
+    position: relative;
+    top: 1rem
+}
+
+#skipped-typewriter > div {
+    display: inline;
+}
+
+.cursor-animated {
+    animation: cursor-animation infinite 1s steps(1);
+}
+
+@keyframes cursor-animation {
+    0% {
+        opacity: 0
+    }
+    50% {
+        opacity: 1
+    }
+}

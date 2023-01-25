@@ -12,6 +12,7 @@ import {FigurePage} from "./pages/FigurePage";
 import {AuthProvider} from "./contexts/authContext";
 import {Footer} from "./components/Footer";
 import {backend} from "./services/backend";
+import {AboutPage} from "./pages/AboutPage";
 
 
 function App() {
@@ -94,6 +95,10 @@ function App() {
                             data: backend.get_figure(params.figureid)
                         });
                     }
+                },
+                {
+                    path: "/about",
+                    element: <AboutPage/>
                 },
                 {
                     path: "*",

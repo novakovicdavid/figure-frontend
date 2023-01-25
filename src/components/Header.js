@@ -1,16 +1,25 @@
 import {Button, Container, Nav, Navbar} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 import {useAuthContext} from "../contexts/authContext";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Upload} from "./Upload";
+import {useNavigate} from "react-router-dom";
 
 export function Header() {
     const {profile, logout} = useAuthContext();
     const [activeLink, setActiveLink] = useState("");
     const [showUploadModal, setShowUploadModal] = useState(false);
     const [expanded, setExpanded] = useState(false);
+    const [className, setClassName] = useState("");
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (window.location.pathname === "/about") setClassName("about-darken");
+        else setClassName("");
+    }, [navigate]);
+
     return (
-        <Navbar bg="light" expand="md" collapseOnSelect={true} expanded={expanded}>
+        <Navbar expand="md" collapseOnSelect={true} expanded={expanded} className={className}>
             <Container>
                 <LinkContainer to={"/"} onClick={() => {
                     setActiveLink("none");
@@ -27,6 +36,13 @@ export function Header() {
                         }}
                                        active={activeLink === "browse"}>
                             <Nav.Link>Browse</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to={"/about"} onClick={() => {
+                            setActiveLink("about");
+                            setExpanded(false);
+                        }}
+                                       active={activeLink === "about"}>
+                            <Nav.Link>About</Nav.Link>
                         </LinkContainer>
                     </Nav>
                     <Nav>
