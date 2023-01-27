@@ -45,6 +45,10 @@
     top: 1rem
 }
 
+.Typewriter {
+    margin-bottom: 2rem;
+}
+
 #skipped-typewriter > div {
     display: inline;
 }

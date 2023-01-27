@@ -4,16 +4,16 @@ import Typewriter from 'typewriter-effect';
 
 function setCursorClass(cursorClass) {
     const cursor = document.getElementsByClassName("cursor").item(0);
-    cursor.classList.forEach((entry) => {
+    [...cursor.classList].forEach((entry) => {
         if (entry !== "cursor" && entry !== "cursor-animated") cursor.classList.remove(entry)
     });
     cursor.classList.add(cursorClass);
     cursor.classList.add('cursor-' + cursorClass);
 }
 
-function toggleCursorAnimated() {
+function setCursorAnimated(animated) {
     const cursor = document.getElementsByClassName("cursor").item(0);
-    cursor.classList.toggle("cursor-animated");
+    cursor.classList.toggle("cursor-animated", animated);
 }
 
 export function AboutPage() {
@@ -37,16 +37,15 @@ export function AboutPage() {
                         }}
                         onInit={(typewriter) => {
                             setCursorClass("h1")
-                            toggleCursorAnimated()
+                            setCursorAnimated(true)
                             typewriter.changeDelay(50)
                             typewriter
                                 .pauseFor(1000)
-                                .callFunction(() => toggleCursorAnimated())
-                                .pasteString()
+                                .callFunction(() => setCursorAnimated(false))
                                 .typeString('<h1 class="d-inline">The project: Twitt</h1>')
                                 .deleteChars(5)
                                 .typeString('<h1 class="d-inline">Figure</h1>')
-                                .callFunction(() => toggleCursorAnimated())
+                                .callFunction(() => setCursorAnimated(true))
                                 .pauseFor(500)
                                 .callFunction(() => setCursorClass("invisible"))
                                 .pasteString('<br/>')
@@ -56,15 +55,15 @@ export function AboutPage() {
                                 .pauseFor(100)
                                 .pasteString('<br/>')
                                 .pauseFor(1000)
-                                .callFunction(() => toggleCursorAnimated())
+                                .callFunction(() => setCursorAnimated(false))
                                 .typeString('<h2 class="d-inline">Frontend:</h2>')
-                                .callFunction(() => toggleCursorAnimated())
+                                .callFunction(() => setCursorAnimated(true))
                                 .callFunction(() => setCursorClass("invisible"))
                                 .pasteString('<br/>')
                                 .callFunction(() => setCursorClass("p"))
                                 .pauseFor(500)
                                 .changeDelay(1)
-                                .callFunction(() => toggleCursorAnimated())
+                                .callFunction(() => setCursorAnimated(false))
                                 .typeString(
                                     '<p class="d-inline">' +
                                     'Language: <code>Javascript</code>' +
@@ -76,20 +75,22 @@ export function AboutPage() {
                                     'Infinite Scroll: <s><code>react-infinite-scroll-component</code></s> ' +
                                     'Custom implementation using <code>react-intersection-observer</code>' +
                                     '</p>')
-                                .callFunction(() => toggleCursorAnimated())
+                                .callFunction(() => setCursorClass("invisible"))
                                 .pasteString('<br/><br/><br/>')
+
+                                .callFunction(() => setCursorAnimated(true))
                                 .callFunction(() => setCursorClass("h2"))
                                 .pauseFor(500)
                                 .changeDelay(50)
-                                .callFunction(() => toggleCursorAnimated())
+                                .callFunction(() => setCursorAnimated(false))
                                 .typeString('<h2 class="d-inline">Backend:</h2>')
-                                .callFunction(() => toggleCursorAnimated())
+                                .callFunction(() => setCursorAnimated(true))
                                 .callFunction(() => setCursorClass("invisible"))
                                 .pasteString('<br/>')
                                 .callFunction(() => setCursorClass("p"))
                                 .pauseFor(500)
                                 .changeDelay(1)
-                                .callFunction(() => toggleCursorAnimated())
+                                .callFunction(() => setCursorAnimated(false))
                                 .typeString('<p class="d-inline">' +
                                     '<s>BaaS: <code>Firebase</code></s>' +
                                     '<br/>' +
@@ -107,36 +108,72 @@ export function AboutPage() {
                                     '<br/>' +
                                     'Hosting: <code>render.com</code>' +
                                     '</p>')
-                                .callFunction(() => toggleCursorAnimated())
+                                .callFunction(() => setCursorClass("invisible"))
                                 .pasteString('<br/><br/><br/>')
+
+                                .callFunction(() => setCursorAnimated(true))
                                 .callFunction(() => setCursorClass("h2"))
                                 .pauseFor(500)
                                 .changeDelay(50)
-                                .callFunction(() => toggleCursorAnimated())
-                                .typeString('<h2 class="d-inline">Addendum:</h2>')
-                                .callFunction(() => toggleCursorAnimated())
+                                .callFunction(() => setCursorAnimated(false))
+                                .typeString('<h2 class="d-inline">Source code:</h2>')
+                                .callFunction(() => setCursorAnimated(true))
                                 .callFunction(() => setCursorClass("invisible"))
                                 .pasteString('<br/>')
                                 .callFunction(() => setCursorClass("p"))
                                 .pauseFor(500)
                                 .changeDelay(1)
-                                .callFunction(() => toggleCursorAnimated())
+                                .callFunction(() => setCursorAnimated(false))
                                 .typeString(
                                     '<p class="d-inline">' +
-                                    'I first used a package to implement infinite scrolling, but ' +
-                                    'it was rather buggy. An implementation ' +
-                                    'using <code>react-intersection-observer</code> (observer api) ' +
-                                    'turned out to be trivial to write.' +
+                                    'Frontend: <a href={"https://github.com/novakovicdavid/figure-frontend"}>https://github.com/novakovicdavid/figure-frontend</a>' +
                                     '<br/>' +
-                                    '<br/>' +
+                                    'Backend: <a href={"https://github.com/novakovicdavid/figure-backend"}>https://github.com/novakovicdavid/figure-frontend</a>' +
+                                    '</p>')
+                                .callFunction(() => setCursorClass("invisible"))
+                                .pasteString('<br/><br/><br/>')
+
+                                .callFunction(() => setCursorAnimated(true))
+                                .callFunction(() => setCursorClass("h2"))
+                                .pauseFor(500)
+                                .changeDelay(50)
+                                .callFunction(() => setCursorAnimated(false))
+                                .typeString('<h2 class="d-inline">Addendum:</h2>')
+                                .callFunction(() => setCursorAnimated(true))
+                                .callFunction(() => setCursorClass("invisible"))
+                                .pasteString('<br/>')
+                                .callFunction(() => setCursorClass("p"))
+                                .pauseFor(500)
+                                .changeDelay(1)
+                                .callFunction(() => setCursorAnimated(false))
+                                .typeString(
+                                    '<p class="d-inline">' +
                                     'Firebase was originally used as a BaaS, later I decided to write one ' +
                                     'myself in Rust. This was a very educational decision as I had to go deeper ' +
-                                    'into how REST, HTTP protocol and cookies worked. ' +
+                                    'into how REST, HTTP protocol and cookies worked.' +
+                                    '<br/>' +
+                                    '<br/>' +
+                                    'The reason I chose Rust is because I wanted to practice writing more Rust. I have ' +
+                                    'some other projects with Rust in it but none of this size. I also believe Rust will ' +
+                                    'take over backend programming in the future: it has the speed/efficiency of a compiled language ' +
+                                    'like C++ and guarantees more safety than a language like Java. ' +
+                                    '<br/>' +
+                                    '<br/>' +
                                     'Some simple integration tests have been written with the help of ' +
                                     'a Docker image based on Postgres, which is seeded with data from the production ' +
                                     'database. Tests are written in Rust, a Docker container with Postgres & data ' +
-                                    'is spun up using a Bash script before testing.')
-                                .callFunction(() => toggleCursorAnimated())
+                                    'is spun up using a Bash script before testing.' +
+                                    '<br/>' +
+                                    '<br/>' +
+                                    'The frontend & backend is continuously deployed on Render.com: Render will automatically ' +
+                                    'deploy new commits in the deploy branch in the backend repo, and the main branch in the ' +
+                                    'frontend repo.' +
+                                    '<br/>' +
+                                    '<br/>' +
+                                    'Bunny.net is used to cache and distribute images (Figures, profile pictures, banners...). ' +
+                                    'Backblaze S3 is used to store said content.' +
+                                    '</p>')
+                                .callFunction(() => setCursorAnimated(true))
                                 .callFunction(() => localStorage.setItem("about-page-seen-before", "true"))
                                 .start();
                         }}
@@ -178,21 +215,39 @@ export function AboutPage() {
                             Hosting: <code>render.com</code>
                         </p>
                         <br/>
-                        <h2>Addendum</h2>
+                        <h2>Source code:</h2>
                         <p>
-                            I first used a package to implement infinite scrolling, but
-                            it was rather buggy. An implementation
-                            using <code>react-intersection-observer</code> (observer api)
-                            turned out to be trivial to write.
+                            Frontend: <a href={"https://github.com/novakovicdavid/figure-frontend"}>https://github.com/novakovicdavid/figure-frontend</a>
                             <br/>
-                            <br/>
+                            Backend: <a href={"https://github.com/novakovicdavid/figure-backend"}>https://github.com/novakovicdavid/figure-frontend</a>
+                        </p>
+                        <br/>
+                        <h2>Addendum:</h2>
+                        <p>
                             Firebase was originally used as a BaaS, later I decided to write one
                             myself in Rust. This was a very educational decision as I had to go deeper
                             into how REST, HTTP protocol and cookies worked.
+                            <br/>
+                            <br/>
+                            The reason I chose Rust is because I wanted to practice writing more Rust. I have
+                            some other projects with Rust in it but none of this size. I also believe Rust will
+                            take over backend programming in the future: it has the speed/efficiency of a compiled language
+                            like C++ and guarantees more safety than a language like Java.
+                            <br/>
+                            <br/>
                             Some simple integration tests have been written with the help of
                             a Docker image based on Postgres, which is seeded with data from the production
                             database. Tests are written in Rust, a Docker container with Postgres & data
                             is spun up using a Bash script before testing.
+                            <br/>
+                            <br/>
+                            The frontend & backend is continuously deployed on Render.com: Render will automatically
+                            deploy new commits in the deploy branch in the backend repo, and the main branch in the
+                            frontend repo.
+                            <br/>
+                            <br/>
+                            Bunny.net is used to cache and distribute images (Figures, profile pictures, banners...).
+                            Backblaze S3 is used to store said content.
                             <span id={"skipped-typewriter"}><Typewriter
                                 options={{
                                     cursor: "█",
