@@ -14,15 +14,26 @@
 }
 
 #about-page, .about-darken, .about-darken button {
-    border-color: unset;
+    color: #18f018 !important;
     background-color: black;
     transition-property: color, background-color, border-top-color, border-right-color, border-bottom-color, border-left-color;
+    border-color: #18f018 !important;
+}
+
+#about-page .btn:hover, .about-darken .btn:hover {
+    background-color: green;
 }
 
 #about-page, .about-darken, .about-darken a, .about-darken small, .about-darken button {
-    transition-duration: 1s !important;
-    transition-timing-function: unset !important;
-    transition-delay: unset !important;
+    transition-duration: 1s;
+    transition-timing-function: unset;
+    transition-delay: unset;
+}
+
+#about-skip-button.light {
+    color: var(--bs-btn-hover-color);
+    background-color: var(--bs-btn-hover-bg);
+    border-color: var(--bs-btn-hover-border-color);
 }
 
 #about-page p.d-inline {
