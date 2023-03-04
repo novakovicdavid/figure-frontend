@@ -50,10 +50,10 @@ registerRoute(
 
 // Cache figures and profiles
 const routesToCache = [
-    "/figures/count/",
-    "/profiles/count/",
-    "/figures/landing-page/",
-    "/figures/browse/",
+    "/figures/count",
+    "/profiles/count",
+    "/figures/landing-page",
+    "/figures/browse",
     "/figure/",
     "/profile/",
 ];
