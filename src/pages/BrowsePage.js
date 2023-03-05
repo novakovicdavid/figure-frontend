@@ -3,11 +3,12 @@ import {useEffect, useMemo, useState} from "react";
 import {Figures} from "../components/Figures";
 import {Awaited} from "../components/Awaited";
 import '../styling/no-scroll.css'
-import {Spinner} from "react-bootstrap";
+import {Button, Spinner} from "react-bootstrap";
 import {backend} from "../services/backend";
 import {useInView} from "react-intersection-observer";
 import {ProfileHeader} from "../components/ProfileHeader";
 import {Profile} from "../components/Profile";
+import {SubscribeToPushNotifsButton} from "../components/SubscribeToPushNotifsButton";
 
 function getNextFiguresAndAppend(figures, setFigures, setReachedEnd, lastFigureId, profile, setFetching) {
     let promise;
@@ -89,6 +90,7 @@ export function BrowsePage() {
     return (
         <div id={"scroller"} className={"overflow-scroll"}
              style={{display: "grid", justifySelf: "center", width: "100vw"}}>
+            <SubscribeToPushNotifsButton/>
             <Awaited awaiting={waitFor} style={{placeSelf: "center", gridRow: "1 / -1", gridColumn: "1 / 2"}}>
                 <div style={infinityStyle}>
                     <div style={{

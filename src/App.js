@@ -13,9 +13,14 @@ import {AuthProvider} from "./contexts/authContext";
 import {Footer} from "./components/Footer";
 import {backend} from "./services/backend";
 import {AboutPage} from "./pages/AboutPage";
+import {useEffect} from "react";
+import runOneSignal from "./index";
 
 
 function App() {
+    useEffect(() => {
+        runOneSignal();
+    })
     const Layout = () => (
         <div style={{display: "grid", height: "100vh", gridTemplateRows: "auto 1fr 56px"}}>
             <AuthProvider>
