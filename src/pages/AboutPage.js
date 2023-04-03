@@ -159,10 +159,13 @@ export function AboutPage() {
                                         'into how REST, HTTP protocol and cookies worked.' +
                                         '<br/>' +
                                         '<br/>' +
-                                        'The reason I chose Rust is because I wanted to practice writing more Rust. I have ' +
-                                        'some other projects with Rust in it but none of this size. I also believe Rust will ' +
-                                        'take over backend programming in the future: it has the speed/efficiency of a compiled language ' +
-                                        'like C++ and guarantees more safety than a language like Java. ' +
+                                        'The reason I chose Rust is because I wanted to practice writing it more. I have ' +
+                                        'some other projects with Rust in it but none of this size. I also believe it will ' +
+                                        'take over backend programming for new projects in the future: it has the speed/efficiency of a compiled language ' +
+                                        'like C++ and guarantees more safety than a language like Java.' +
+                                        '<br/>' +
+                                        'Though the ecosystem still needs a few more years to truly mature. It\'s nowhere near Java\'s level, ' +
+                                        'but I believe it will get there in the future.' +
                                         '<br/>' +
                                         '<br/>' +
                                         'Some simple integration tests have been written with the help of ' +
@@ -236,10 +239,13 @@ export function AboutPage() {
                                 into how REST, HTTP protocol and cookies worked.
                                 <br/>
                                 <br/>
-                                The reason I chose Rust is because I wanted to practice writing more Rust. I have
-                                some other projects with Rust in it but none of this size. I also believe Rust will
-                                take over backend programming in the future: it has the speed/efficiency of a compiled language
+                                The reason I chose Rust is because I wanted to practice writing it more. I have
+                                some other projects with Rust in it but none of this size. I also believe it will
+                                take over backend programming for new projects in the future: it has the speed/efficiency of a compiled language
                                 like C++ and guarantees more safety than a language like Java.
+                                <br/>
+                                Though the ecosystem still needs a few more years to truly mature. It's nowhere near Java's level,
+                                but I believe it will get there in the future.
                                 <br/>
                                 <br/>
                                 Some simple integration tests have been written with the help of
