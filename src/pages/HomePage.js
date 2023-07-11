@@ -4,8 +4,10 @@ import {useLoaderData} from "react-router-dom";
 import {useEffect, useLayoutEffect, useState} from "react";
 import {FigureTease} from "../components/FigureTease";
 import {useInView} from "react-intersection-observer";
+import {useAuthContext} from "../contexts/authContext";
 
 export function HomePage() {
+    const {profile} = useAuthContext();
     const {totalFiguresCountPromise, totalProfilesCountPromise, latestFiguresPromise} = useLoaderData();
     const [totalFigures, setTotalFigures] = useState("...");
     const [totalUsers, setTotalUsers] = useState("...")
@@ -61,7 +63,7 @@ export function HomePage() {
                             </Row>
                             <Row className={"mt-3"}>
                                 <Col className={"align-items-stretch d-flex"}>
-                                    <LinkContainer to={"/register"}>
+                                    <LinkContainer to={!profile ? "/register" : `/profile/${profile.id}`}>
                                         <Button className={"flex-grow-1 flex-sm-grow-0"}>Join Figure</Button>
                                     </LinkContainer>
                                 </Col>
@@ -108,7 +110,7 @@ export function HomePage() {
                              ...teaserStyle
                          }}>
                         <h2 className={"p-0 mb-4 mt-4"}>Latest Figures</h2>
-                        <FigureTease figures={latestFigures}/>
+                        <FigureTease figures={latestFigures} profile={profile}/>
                     </Row>
                 }
             </Row>
