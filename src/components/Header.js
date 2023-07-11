@@ -2,7 +2,7 @@ import {Button, Container, Nav, Navbar} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 import {useAuthContext} from "../contexts/authContext";
 import {useEffect, useState} from "react";
-import {Upload} from "./Upload";
+import {CreateFigureModal} from "./CreateFigureModal";
 import {useNavigate} from "react-router-dom";
 
 export function Header() {
@@ -96,7 +96,7 @@ export function Header() {
                         }
                     </Nav>
                 </Navbar.Collapse>
-                <Upload show={showUploadModal} setShow={setShowUploadModal}/>
+                <CreateFigureModal show={showUploadModal} setShow={setShowUploadModal}/>
             </Container>
         </Navbar>
     )
