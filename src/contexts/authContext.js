@@ -17,7 +17,7 @@ export function AuthProvider(props) {
                 setProfile(result.profile);
                 localStorage.setItem("profile", JSON.stringify(result.profile));
             } else {
-                if (result.error === "no-session-found" || result.error === "no-session-received") {
+                if (result.error === "resource-not-found" || result.error === "no-session-received") {
                     // Session cookie is invalid, invalidate cached profile
                     setProfile(undefined);
                     localStorage.removeItem("profile");
